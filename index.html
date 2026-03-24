@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deepak Mahato — Laravel Dev</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'JetBrains Mono',monospace;overflow-x:hidden;transition:background 0.4s,color 0.4s}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{border-radius:2px}
+
+/* CURSOR */
+#cursor{position:fixed;pointer-events:none;z-index:9999;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);transition:transform 0.1s,opacity 0.3s;mix-blend-mode:difference;background:#fff}
+#cursor-ring{position:fixed;pointer-events:none;z-index:9998;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.4);transform:translate(-50%,-50%);transition:all 0.18s ease;mix-blend-mode:difference}
+
+/* THEMES */
+[data-theme="dark"]{
+  --bg:#080c18;--bg2:#0d1121;--surface:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.07);
+  --border-h:rgba(255,255,255,0.15);--text:#e4e8f0;--muted:#64748b;--muted2:#94a3b8;
+  --accent:#4fffb0;--accent2:#3dd6f5;--accent-bg:rgba(79,255,176,0.08);--accent-b:rgba(79,255,176,0.18);
+  --scrollbar:#1e2535;--code-bg:#0f1629;--tag-bg:rgba(255,255,255,0.05);
+  color:#e4e8f0;background:#080c18;
+}
+[data-theme="light"]{
+  --bg:#f0f2f8;--bg2:#e8eaf2;--surface:rgba(255,255,255,0.7);--border:rgba(0,0,0,0.08);
+  --border-h:rgba(0,0,0,0.18);--text:#1a1f35;--muted:#64748b;--muted2:#475569;
+  --accent:#00a86b;--accent2:#0099cc;--accent-bg:rgba(0,168,107,0.08);--accent-b:rgba(0,168,107,0.2);
+  --scrollbar:#d1d5e0;--code-bg:#e2e4ef;--tag-bg:rgba(0,0,0,0.05);
+  color:#1a1f35;background:#f0f2f8;
+}
+[data-theme="cyber"]{
+  --bg:#0a001a;--bg2:#100022;--surface:rgba(180,0,255,0.06);--border:rgba(180,0,255,0.15);
+  --border-h:rgba(255,0,200,0.4);--text:#f0e0ff;--muted:#9f78c0;--muted2:#c8a8e0;
+  --accent:#ff00cc;--accent2:#aa00ff;--accent-bg:rgba(255,0,204,0.08);--accent-b:rgba(255,0,204,0.25);
+  --scrollbar:#2d0044;--code-bg:#0e0020;--tag-bg:rgba(180,0,255,0.1);
+  color:#f0e0ff;background:#0a001a;
+}
+[data-theme="amber"]{
+  --bg:#0f0a00;--bg2:#1a1200;--surface:rgba(255,180,0,0.06);--border:rgba(255,180,0,0.12);
+  --border-h:rgba(255,200,0,0.35);--text:#fff8e0;--muted:#9a8040;--muted2:#c8a850;
+  --accent:#ffb300;--accent2:#ff8c00;--accent-bg:rgba(255,179,0,0.08);--accent-b:rgba(255,179,0,0.22);
+  --scrollbar:#2a1e00;--code-bg:#130d00;--tag-bg:rgba(255,179,0,0.08);
+  color:#fff8e0;background:#0f0a00;
+}
+
+::-webkit-scrollbar-thumb{background:var(--scrollbar)}
+</style>
+</head>
+<body data-theme="dark">
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── THEME CONFIG ─────────────────────────────────────
+const THEMES = [
+  { id:'dark',  label:'Dark',   icon:'🌑' },
+  { id:'light', label:'Light',  icon:'☀️' },
+  { id:'cyber', label:'Cyber',  icon:'⚡' },
+  { id:'amber', label:'Amber',  icon:'🔥' },
+];
+
+// ── TERMINAL LINES ───────────────────────────────────
+const TERMINAL_LINES = [
+  { t:0,   txt:'$ whoami',                     color:'accent' },
+  { t:600, txt:'→ deepak mahato',               color:'text' },
+  { t:1100,txt:'$ cat skills.json | jq .core',  color:'accent' },
+  { t:1700,txt:'→ ["Laravel","PHP","MySQL","Redis","GCP"]', color:'muted' },
+  { t:2300,txt:'$ git log --oneline -3',         color:'accent' },
+  { t:2900,txt:'feat: GenAI CRM integration',    color:'green' },
+  { t:3200,txt:'fix: JWT refresh token edge case',color:'green' },
+  { t:3500,txt:'perf: Redis cache quotation engine',color:'green'},
+  { t:4100,txt:'$ _',                            color:'accent' },
+];
+
+// ── SKILLS DATA ──────────────────────────────────────
+const SKILLS = [
+  { group:'Languages',       items:['PHP','Python','JavaScript','SQL','HTML/CSS'] },
+  { group:'Frameworks',      items:['Laravel','FastAPI'] },
+  { group:'Databases',       items:['MySQL','PostgreSQL','MongoDB'] },
+  { group:'Architecture',    items:['REST APIs','DDD','Event-Driven','Modular Monolith','Service Layer'] },
+  { group:'Queue & Cache',   items:['Redis','Laravel Queues','Pub/Sub','Webhooks','Job Batching'] },
+  { group:'Security',        items:['JWT','OAuth2','RBAC','AES Encryption','Rate Limiting','Audit Logging'] },
+  { group:'Cloud & DevOps',  items:['GCP','Git','Postman','Swagger/OpenAPI'] },
+  { group:'AI Stack',        items:['LLM Integration','Gemini API','Ollama','OCR Pipelines','Prompt Engineering','llama.cpp'] },
+];
+
+// ── EXPERIENCE DATA ──────────────────────────────────
+const EXP = [
+  {
+    role:'Software Developer',
+    company:'FynTune Solutions Pvt. Ltd.',
+    loc:'Mumbai',
+    period:'Nov 2023 — Feb 2026',
+    bullets:[
+      'Architected backend systems for Corporate Travel, Affinity, CRM, and Agent Onboarding insurance platforms.',
+      'Built quotation engines, customer configs, Swagger REST APIs, real-time alerts, webhook integrations.',
+      'Redesigned DB schema for Agent Onboarding — streamlined endorsements, automated certificate generation.',
+      'Integrated payment gateways with AES encryption, centralised logging, cross-app Pub/Sub communication.',
+      'Connected GCP, CCM, Filenet, and 10+ insurer APIs enabling seamless data exchange and policy issuance.',
+      'Delivered GenAI-powered CRM features, multi-SMTP email workflows, automated lead assignment.',
+      'Implemented RBAC, JWT/OAuth2, rate limiting, end-to-end request auditing across all platforms.',
+    ],
+  },
+  {
+    role:'Web Development Intern',
+    company:'Creative Globe Pvt. Ltd.',
+    loc:'Mumbai',
+    period:'Jun 2023 — Sep 2023',
+    bullets:[
+      'Built backend modules and admin panel for a Gems & Jewelry B2C e-commerce platform using Laravel.',
+      'Resolved production bugs, developed dynamic email templates, improved UI responsiveness.',
+    ],
+  },
+];
+
+// ── STATIC PROJECTS (fallback) ───────────────────────
+const STATIC_PROJECTS = [
+  {
+    name:'AI Study Buddy',
+    description:'AI learning assistant generating summaries, flashcards, quizzes, and exportable PDFs via OCR ingestion and structured LLM prompt workflows.',
+    topics:['laravel','python','fastapi','gemini','ocr'],
+    html_url:'https://github.com/deecodek',
+    language:'PHP',
+    stargazers_count:0,
+  },
+  {
+    name:'Python Code Writer',
+    description:'Scaffolds complete project structures — folders, files, orchestration code — from a natural-language prompt.',
+    topics:['python','gemini-api','cli'],
+    html_url:'https://github.com/deecodek',
+    language:'Python',
+    stargazers_count:0,
+  },
+];
+
+// ── CURSOR ────────────────────────────────────────────
+function useCursor() {
+  useEffect(() => {
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    const move = e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; };
+    const raf = () => { rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(raf); };
+    const over = e => { if(e.target.closest('a,button,[data-hover]')){ ring.style.transform='translate(-50%,-50%) scale(2)'; ring.style.opacity='0.6'; } };
+    const out  = () => { ring.style.transform='translate(-50%,-50%) scale(1)'; ring.style.opacity='1'; };
+    document.addEventListener('mousemove',move);
+    document.addEventListener('mouseover',over);
+    document.addEventListener('mouseout',out);
+    requestAnimationFrame(raf);
+    return ()=>{ document.removeEventListener('mousemove',move); document.removeEventListener('mouseover',over); document.removeEventListener('mouseout',out); };
+  },[]);
+}
+
+// ── TYPEWRITER ────────────────────────────────────────
+function Terminal() {
+  const [visible,setVisible] = useState([]);
+  useEffect(()=>{
+    TERMINAL_LINES.forEach(l=>{ setTimeout(()=>setVisible(p=>[...p,l]),l.t); });
+  },[]);
+  const colorMap = { accent:'var(--accent)', text:'var(--text)', muted:'var(--muted2)', green:'#4ade80' };
+  return (
+    <div style={{background:'var(--code-bg)',border:'1px solid var(--border)',borderRadius:14,padding:'20px 24px',fontFamily:'JetBrains Mono,monospace',fontSize:'0.78rem',lineHeight:1.8,minHeight:220,position:'relative',overflow:'hidden'}}>
+      <div style={{display:'flex',gap:6,marginBottom:14}}>
+        {['#ff5f57','#febc2e','#28c840'].map(c=><div key={c} style={{width:10,height:10,borderRadius:'50%',background:c}}/>)}
+        <span style={{marginLeft:8,fontSize:'0.65rem',color:'var(--muted)',letterSpacing:'0.1em'}}>terminal — zsh</span>
+      </div>
+      {visible.map((l,i)=>(
+        <div key={i} style={{color:colorMap[l.color]||'var(--text)',display:'flex',alignItems:'center',gap:6}}>
+          <span>{l.txt}</span>
+          {i===visible.length-1 && l.txt.endsWith('_') && <span style={{display:'inline-block',width:8,height:14,background:'var(--accent)',animation:'blink 1s step-end infinite'}}/>}
+        </div>
+      ))}
+      <style>{`@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}`}</style>
+    </div>
+  );
+}
+
+// ── GLASS CARD ────────────────────────────────────────
+function Glass({children,style={},className='',hover=true,...p}){
+  const [hov,setHov]=useState(false);
+  return (
+    <div
+      onMouseEnter={()=>hover&&setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{
+        background: hov ? 'rgba(255,255,255,0.065)' : 'var(--surface)',
+        border:`1px solid ${hov?'var(--border-h)':'var(--border)'}`,
+        backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',
+        borderRadius:18,
+        transition:'all 0.25s ease',
+        transform: hov ? 'translateY(-2px)' : 'none',
+        boxShadow: hov ? '0 12px 40px rgba(0,0,0,0.25)' : 'none',
+        ...style,
+      }}
+      {...p}
+    >{children}</div>
+  );
+}
+
+// ── TAG ───────────────────────────────────────────────
+function Tag({children,accent=false}){
+  const [h,setH]=useState(false);
+  return (
+    <span
+      onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+      style={{
+        display:'inline-block',
+        fontSize:'0.67rem',padding:'3px 11px',borderRadius:7,cursor:'default',
+        background: h ? 'var(--accent-bg)' : (accent?'var(--accent-bg)':'var(--tag-bg)'),
+        border:`1px solid ${h?'var(--accent-b)':(accent?'var(--accent-b)':'var(--border)')}`,
+        color: h||accent ? 'var(--accent)' : 'var(--muted2)',
+        transition:'all 0.2s',
+        transform: h?'scale(1.05)':'scale(1)',
+      }}
+    >{children}</span>
+  );
+}
+
+// ── BTN ───────────────────────────────────────────────
+function Btn({children,href,solid=false,onClick,style={}}){
+  const [h,setH]=useState(false);
+  const s={
+    display:'inline-flex',alignItems:'center',gap:7,
+    padding:'10px 22px',borderRadius:12,border:'none',cursor:'pointer',
+    fontFamily:'JetBrains Mono,monospace',fontSize:'0.73rem',letterSpacing:'0.04em',
+    textDecoration:'none',transition:'all 0.2s',
+    transform: h?'translateY(-2px)':'translateY(0)',
+    background: solid ? (h?'#72ffc3':'var(--accent)') : (h?'rgba(255,255,255,0.08)':'var(--surface)'),
+    color: solid ? '#080c18' : 'var(--text)',
+    border: solid?'none':'1px solid var(--border)',
+    boxShadow: h && solid ? '0 0 24px var(--accent-b)' : (h?'0 4px 20px rgba(0,0,0,0.2)':'none'),
+    ...style,
+  };
+  if(href) return <a href={href} target="_blank" rel="noopener" style={s} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} data-hover>{children}</a>;
+  return <button style={s} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} onClick={onClick} data-hover>{children}</button>;
+}
+
+// ── SECTION LABEL ─────────────────────────────────────
+function SectionLabel({children}){
+  return (
+    <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:28}}>
+      <span style={{fontSize:'0.62rem',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',whiteSpace:'nowrap'}}>{children}</span>
+      <div style={{flex:1,height:1,background:'linear-gradient(to right, var(--border), transparent)'}}/>
+    </div>
+  );
+}
+
+// ── GITHUB REPOS ─────────────────────────────────────
+function Projects() {
+  const [repos,setRepos]=useState([]);
+  const [loading,setLoading]=useState(true);
+  const [err,setErr]=useState(false);
+
+  useEffect(()=>{
+    fetch('https://api.github.com/users/deecodek/repos?sort=updated&per_page=20&type=public')
+      .then(r=>r.json())
+      .then(data=>{
+        if(Array.isArray(data) && data.length>0){
+          setRepos(data.filter(r=>!r.fork).slice(0,12));
+        } else {
+          setRepos(STATIC_PROJECTS);
+          setErr(true);
+        }
+        setLoading(false);
+      })
+      .catch(()=>{ setRepos(STATIC_PROJECTS); setErr(true); setLoading(false); });
+  },[]);
+
+  const langColor = { PHP:'#4f5d95',Python:'#3572A5',JavaScript:'#f1e05a',TypeScript:'#3178c6',HTML:'#e34c26',CSS:'#563d7c',default:'var(--muted)' };
+
+  if(loading) return (
+    <div style={{textAlign:'center',padding:'60px 0',color:'var(--muted)',fontSize:'0.8rem'}}>
+      <div style={{display:'inline-block',width:24,height:24,border:'2px solid var(--border)',borderTopColor:'var(--accent)',borderRadius:'50%',animation:'spin 0.8s linear infinite',marginBottom:12}}/>
+      <br/>fetching repos...
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+    </div>
+  );
+
+  return (
+    <div>
+      {err && <p style={{fontSize:'0.72rem',color:'var(--muted)',marginBottom:16}}>// GitHub API unavailable — showing featured projects</p>}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:14}}>
+        {repos.map((r,i)=>(
+          <RepoCard key={i} repo={r} langColor={langColor}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RepoCard({repo,langColor}){
+  const [h,setH]=useState(false);
+  const lc = langColor[repo.language]||langColor.default;
+  return (
+    <a
+      href={repo.html_url} target="_blank" rel="noopener"
+      onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+      style={{
+        display:'flex',flexDirection:'column',gap:10,padding:'22px 24px',
+        borderRadius:16,textDecoration:'none',color:'var(--text)',
+        background: h?'rgba(255,255,255,0.065)':'var(--surface)',
+        border:`1px solid ${h?'var(--border-h)':'var(--border)'}`,
+        backdropFilter:'blur(16px)',transition:'all 0.22s',
+        transform:h?'translateY(-3px)':'none',
+        boxShadow:h?'0 8px 32px rgba(0,0,0,0.3)':'none',
+        position:'relative',overflow:'hidden',
+      }}
+      data-hover
+    >
+      {h && <div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 80% 20%, var(--accent-bg), transparent 60%)',pointerEvents:'none'}}/>}
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+        <span style={{fontSize:'0.7rem',color:'var(--muted)',letterSpacing:'0.06em'}}>
+          {String(repo.stargazers_count||0).padStart(2,'0')} ★
+        </span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--muted)" style={{flexShrink:0,transform:h?'rotate(-45deg)':'none',transition:'transform 0.2s'}}><path d="M7 17L17 7M17 7H7M17 7v10"/><path stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" fill="none"/></svg>
+      </div>
+      <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text)',lineHeight:1.2}}>{repo.name}</div>
+      <div style={{fontSize:'0.75rem',color:'var(--muted2)',lineHeight:1.6,flex:1}}>{repo.description||'No description.'}</div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:5}}>
+        {(repo.topics||[]).slice(0,4).map(t=><Tag key={t} accent>{t}</Tag>)}
+      </div>
+      {repo.language && (
+        <div style={{display:'flex',alignItems:'center',gap:6,marginTop:2}}>
+          <div style={{width:8,height:8,borderRadius:'50%',background:lc}}/>
+          <span style={{fontSize:'0.68rem',color:'var(--muted)'}}>{repo.language}</span>
+        </div>
+      )}
+    </a>
+  );
+}
+
+// ── THEME SWITCHER ────────────────────────────────────
+function ThemeSwitcher({theme,setTheme}){
+  const [open,setOpen]=useState(false);
+  return (
+    <div style={{position:'relative'}}>
+      <button
+        onClick={()=>setOpen(o=>!o)} data-hover
+        style={{
+          background:'var(--surface)',border:'1px solid var(--border)',
+          borderRadius:10,padding:'7px 14px',cursor:'pointer',
+          fontFamily:'JetBrains Mono',fontSize:'0.7rem',color:'var(--text)',
+          display:'flex',alignItems:'center',gap:6,transition:'all 0.2s',
+        }}
+      >
+        {THEMES.find(t=>t.id===theme)?.icon} theme
+        <span style={{fontSize:'0.6rem',color:'var(--muted)'}}>{open?'▲':'▼'}</span>
+      </button>
+      {open && (
+        <div style={{
+          position:'absolute',top:'calc(100% + 8px)',right:0,
+          background:'var(--bg2)',border:'1px solid var(--border)',
+          borderRadius:12,padding:6,zIndex:200,minWidth:130,
+          backdropFilter:'blur(20px)',boxShadow:'0 16px 40px rgba(0,0,0,0.4)',
+        }}>
+          {THEMES.map(t=>(
+            <button key={t.id} onClick={()=>{setTheme(t.id);setOpen(false);}} data-hover
+              style={{
+                display:'flex',alignItems:'center',gap:10,width:'100%',
+                padding:'9px 12px',borderRadius:8,border:'none',cursor:'pointer',
+                background:theme===t.id?'var(--accent-bg)':'transparent',
+                color:theme===t.id?'var(--accent)':'var(--text)',
+                fontFamily:'JetBrains Mono',fontSize:'0.72rem',transition:'all 0.15s',
+              }}
+            >{t.icon} {t.label}</button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── NAV ───────────────────────────────────────────────
+const NAV_ITEMS = ['home','about','skills','work','projects','education'];
+function Nav({theme,setTheme,active}){
+  const [scrolled,setScrolled]=useState(false);
+  useEffect(()=>{
+    const h=()=>setScrolled(window.scrollY>40);
+    window.addEventListener('scroll',h);
+    return ()=>window.removeEventListener('scroll',h);
+  },[]);
+  const scroll=id=>{ if(id==='home'){window.scrollTo({top:0,behavior:'smooth'});return;} document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); };
+  return (
+    <nav style={{
+      position:'fixed',top:0,left:0,right:0,zIndex:100,
+      height:58,display:'flex',alignItems:'center',justifyContent:'space-between',
+      padding:'0 28px',
+      background: scrolled?'rgba(8,12,24,0.85)':'transparent',
+      backdropFilter: scrolled?'blur(24px)':'none',
+      WebkitBackdropFilter: scrolled?'blur(24px)':'none',
+      borderBottom: scrolled?'1px solid var(--border)':'none',
+      transition:'all 0.3s',
+    }}>
+      <button onClick={()=>scroll('home')} data-hover
+        style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'1rem',color:'var(--text)',background:'none',border:'none',cursor:'pointer',letterSpacing:'-0.02em'}}>
+        DM<span style={{color:'var(--accent)'}}>.</span>
+      </button>
+      <div style={{display:'flex',alignItems:'center',gap:4}}>
+        {NAV_ITEMS.map(id=>(
+          <button key={id} onClick={()=>scroll(id)} data-hover
+            style={{
+              background: active===id?'var(--accent-bg)':'transparent',
+              border:'none',borderRadius:8,padding:'5px 12px',cursor:'pointer',
+              fontFamily:'JetBrains Mono',fontSize:'0.65rem',letterSpacing:'0.1em',textTransform:'uppercase',
+              color: active===id?'var(--accent)':'var(--muted)',
+              transition:'all 0.2s',
+            }}
+          >{id}</button>
+        ))}
+      </div>
+      <ThemeSwitcher theme={theme} setTheme={setTheme}/>
+    </nav>
+  );
+}
+
+// ── MAIN APP ──────────────────────────────────────────
+function App(){
+  const [theme,setTheme]=useState('dark');
+  const [active,setActive]=useState('home');
+  useCursor();
+
+  useEffect(()=>{
+    document.body.setAttribute('data-theme',theme);
+  },[theme]);
+
+  // Active section tracker
+  useEffect(()=>{
+    const sections=['about','skills','work','projects','education'];
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});
+    },{threshold:0.3});
+    sections.forEach(id=>{ const el=document.getElementById(id); if(el)obs.observe(el); });
+    const heroObs=new IntersectionObserver(([e])=>{if(e.isIntersecting)setActive('home');},{threshold:0.5});
+    const hero=document.getElementById('home-hero');
+    if(hero)heroObs.observe(hero);
+    return ()=>obs.disconnect();
+  },[]);
+
+  const cx={maxWidth:880,margin:'0 auto',padding:'0 28px'};
+  const sec={padding:'80px 0'};
+
+  return (
+    <>
+      <Nav theme={theme} setTheme={setTheme} active={active}/>
+
+      {/* Orbs */}
+      <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:0,overflow:'hidden'}}>
+        <div style={{position:'absolute',top:-200,left:-180,width:580,height:580,borderRadius:'50%',background:'radial-gradient(circle,rgba(79,255,176,0.07) 0%,transparent 68%)',animation:'o1 14s ease-in-out infinite alternate'}}/>
+        <div style={{position:'absolute',bottom:-160,right:-120,width:460,height:460,borderRadius:'50%',background:'radial-gradient(circle,rgba(61,214,245,0.06) 0%,transparent 68%)',animation:'o2 18s ease-in-out infinite alternate'}}/>
+        <style>{`
+          @keyframes o1{from{transform:translate(0,0)}to{transform:translate(70px,55px)}}
+          @keyframes o2{from{transform:translate(0,0)}to{transform:translate(-55px,-70px)}}
+        `}</style>
+      </div>
+
+      <div style={{position:'relative',zIndex:1}}>
+
+        {/* ══ HERO ══════════════════════════════════════ */}
+        <section style={{...sec,paddingTop:140,minHeight:'100vh',display:'flex',flexDirection:'column',justifyContent:'center'}} id="home-hero">
+          <div style={cx}>
+            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,width:'fit-content',
+              background:'var(--accent-bg)',border:'1px solid var(--accent-b)',borderRadius:100,padding:'6px 16px'}}>
+              <div style={{width:6,height:6,borderRadius:'50%',background:'var(--accent)',animation:'blink 2s ease-in-out infinite'}}/>
+              <span style={{fontSize:'0.68rem',letterSpacing:'0.12em',textTransform:'uppercase',color:'var(--accent)'}}>available for work</span>
+            </div>
+            <h1 style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(3rem,8vw,5.5rem)',fontWeight:800,lineHeight:1.03,letterSpacing:'-0.03em',marginBottom:20}}>
+              Deepak<br/><span style={{color:'var(--accent)'}}>Mahato.</span>
+            </h1>
+            <p style={{fontSize:'0.85rem',color:'var(--muted2)',maxWidth:460,lineHeight:1.8,marginBottom:28}}>
+              Laravel backend developer — fintech platforms, REST APIs, AI integrations. Based in Mumbai.
+            </p>
+            <div style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:48}}>
+              <Btn href="mailto:deepakddm1@gmail.com" solid>📨 get in touch</Btn>
+              <Btn href="https://github.com/deecodek">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+              </Btn>
+              <Btn href="https://linkedin.com/in/deepak-mahato-0170a0203">LinkedIn ↗</Btn>
+            </div>
+            <Terminal/>
+          </div>
+        </section>
+
+        {/* ══ ABOUT ══════════════════════════════════════ */}
+        <section id="about" style={sec}>
+          <div style={cx}>
+            <SectionLabel>// about</SectionLabel>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
+              <Glass style={{padding:'34px 36px',gridColumn:'1/-1'}}>
+                <p style={{fontSize:'0.86rem',lineHeight:1.85,color:'var(--muted2)'}}>
+                  <strong style={{color:'var(--text)'}}>2+ years</strong> building production-grade backend systems in <strong style={{color:'var(--accent)'}}>Laravel / PHP</strong>.
+                  At FynTune Solutions I architect insurance platforms — real-time quotation engines, multi-insurer API integrations, event-driven workflows.
+                  Shipped everything from <strong style={{color:'var(--text)'}}>RBAC auth systems</strong> to <strong style={{color:'var(--text)'}}>GenAI-powered CRM features</strong>.
+                  Lean toward DDD, clean architecture, and keeping systems predictably boring.
+                </p>
+              </Glass>
+              {[
+                {label:'Location',val:'Mumbai, India 🇮🇳'},
+                {label:'Experience',val:'2+ years'},
+                {label:'Primary Stack',val:'Laravel · PHP · MySQL'},
+                {label:'Contact',val:'deepakddm1@gmail.com',link:'mailto:deepakddm1@gmail.com'},
+              ].map(m=>(
+                <Glass key={m.label} style={{padding:'20px 24px'}}>
+                  <div style={{fontSize:'0.6rem',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--muted)',marginBottom:6}}>{m.label}</div>
+                  {m.link
+                    ? <a href={m.link} style={{fontSize:'0.8rem',color:'var(--accent)',textDecoration:'none'}}>{m.val}</a>
+                    : <div style={{fontSize:'0.82rem',color:'var(--text)'}}>{m.val}</div>}
+                </Glass>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ SKILLS ══════════════════════════════════════ */}
+        <section id="skills" style={sec}>
+          <div style={cx}>
+            <SectionLabel>// skills</SectionLabel>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:14}}>
+              {SKILLS.map(sg=>(
+                <Glass key={sg.group} style={{padding:'24px 26px'}}>
+                  <div style={{fontSize:'0.6rem',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent2)',marginBottom:12}}>{sg.group}</div>
+                  <div style={{display:'flex',flexWrap:'wrap',gap:7}}>
+                    {sg.items.map(t=><Tag key={t}>{t}</Tag>)}
+                  </div>
+                </Glass>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ WORK ══════════════════════════════════════ */}
+        <section id="work" style={sec}>
+          <div style={cx}>
+            <SectionLabel>// work experience</SectionLabel>
+            <div style={{display:'flex',flexDirection:'column',gap:16}}>
+              {EXP.map((e,i)=>(
+                <Glass key={i} style={{padding:'30px 34px',position:'relative',overflow:'hidden'}}>
+                  <div style={{position:'absolute',left:0,top:0,bottom:0,width:2,background:'linear-gradient(to bottom, var(--accent), var(--accent2))',borderRadius:'0 2px 2px 0'}}/>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:10,marginBottom:6}}>
+                    <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text)'}}>{e.role}</div>
+                    <div style={{fontSize:'0.67rem',color:'var(--muted)',background:'var(--tag-bg)',border:'1px solid var(--border)',padding:'4px 12px',borderRadius:100}}>{e.period}</div>
+                  </div>
+                  <div style={{fontSize:'0.75rem',color:'var(--accent)',marginBottom:16}}>{e.company} — {e.loc}</div>
+                  <ul style={{listStyle:'none',display:'flex',flexDirection:'column',gap:8}}>
+                    {e.bullets.map((b,j)=>(
+                      <li key={j} style={{fontSize:'0.78rem',color:'var(--muted2)',lineHeight:1.65,paddingLeft:18,position:'relative'}}>
+                        <span style={{position:'absolute',left:0,color:'var(--accent)',fontSize:'0.72rem'}}>—</span>{b}
+                      </li>
+                    ))}
+                  </ul>
+                </Glass>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ PROJECTS ══════════════════════════════════ */}
+        <section id="projects" style={sec}>
+          <div style={cx}>
+            <SectionLabel>// projects · github</SectionLabel>
+            <Projects/>
+          </div>
+        </section>
+
+        {/* ══ EDUCATION ══════════════════════════════════ */}
+        <section id="education" style={sec}>
+          <div style={cx}>
+            <SectionLabel>// education</SectionLabel>
+            <div style={{display:'flex',flexDirection:'column',gap:12}}>
+              {[
+                {deg:'BSc Information Technology',school:'University of Mumbai',yr:'2019 — 2022'},
+                {deg:'Higher Secondary Certificate — Science',school:'Sandesh College, Mumbai',yr:'2017 — 2019'},
+              ].map(e=>(
+                <Glass key={e.deg} style={{padding:'26px 34px',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:14}}>
+                  <div>
+                    <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'0.96rem',color:'var(--text)'}}>{e.deg}</div>
+                    <div style={{fontSize:'0.77rem',color:'var(--muted2)',marginTop:4}}>{e.school}</div>
+                  </div>
+                  <div style={{fontSize:'0.67rem',color:'var(--muted)',background:'var(--tag-bg)',border:'1px solid var(--border)',padding:'4px 14px',borderRadius:100}}>{e.yr}</div>
+                </Glass>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ FOOTER ══════════════════════════════════════ */}
+        <footer style={{borderTop:'1px solid var(--border)',padding:'32px 28px',maxWidth:880,margin:'0 auto',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:14}}>
+          <div style={{fontSize:'0.7rem',color:'var(--muted)'}}>© 2026 Deepak Mahato</div>
+          <div style={{display:'flex',gap:20}}>
+            {[['Email','mailto:deepakddm1@gmail.com'],['GitHub','https://github.com/deecodek'],['LinkedIn','https://linkedin.com/in/deepak-mahato-0170a0203']].map(([l,h])=>(
+              <a key={l} href={h} target="_blank" rel="noopener"
+                style={{fontSize:'0.7rem',color:'var(--muted)',textDecoration:'none',transition:'color 0.2s'}}
+                onMouseEnter={e=>e.target.style.color='var(--accent)'}
+                onMouseLeave={e=>e.target.style.color='var(--muted)'}
+                data-hover
+              >{l}</a>
+            ))}
+          </div>
+        </footer>
+
+      </div>
+
+      <style>{`
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+        @media(max-width:600px){
+          nav>div:nth-child(2){display:none}
+        }
+      `}</style>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
