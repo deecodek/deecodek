@@ -4,104 +4,152 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Deepak Mahato — Laravel Dev</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'JetBrains Mono',monospace;overflow-x:hidden;transition:background 0.4s,color 0.4s}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{border-radius:2px}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',sans-serif;overflow-x:hidden;transition:background 0.5s,color 0.5s}
+::-webkit-scrollbar{width:0px}
+a{text-decoration:none}
+button{border:none;background:none;cursor:pointer;font-family:inherit}
 
 /* CURSOR */
-#cursor{position:fixed;pointer-events:none;z-index:9999;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);transition:transform 0.1s,opacity 0.3s;mix-blend-mode:difference;background:#fff}
-#cursor-ring{position:fixed;pointer-events:none;z-index:9998;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.4);transform:translate(-50%,-50%);transition:all 0.18s ease;mix-blend-mode:difference}
+.cursor-dot{position:fixed;pointer-events:none;z-index:9999;width:6px;height:6px;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;background:#fff;transition:width 0.2s,height 0.2s}
+.cursor-ring{position:fixed;pointer-events:none;z-index:9998;width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:all 0.15s ease-out;mix-blend-mode:difference}
+.cursor-dot.hovering{width:12px;height:12px}
+.cursor-ring.hovering{width:60px;height:60px;border-color:rgba(255,255,255,0.15)}
 
 /* THEMES */
 [data-theme="dark"]{
-  --bg:#080c18;--bg2:#0d1121;--surface:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.07);
-  --border-h:rgba(255,255,255,0.15);--text:#e4e8f0;--muted:#64748b;--muted2:#94a3b8;
-  --accent:#4fffb0;--accent2:#3dd6f5;--accent-bg:rgba(79,255,176,0.08);--accent-b:rgba(79,255,176,0.18);
-  --scrollbar:#1e2535;--code-bg:#0f1629;--tag-bg:rgba(255,255,255,0.05);
-  color:#e4e8f0;background:#080c18;
+  --bg:#06080f;--bg2:#0a0e1a;--bg3:#0e1225;--surface:rgba(255,255,255,0.025);--surface2:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.12);
+  --text:#e8ecf4;--text2:#c8cdd8;--muted:#4a5568;--muted2:#718096;
+  --accent:#4fffb0;--accent2:#3dd6f5;--accent3:#a78bfa;
+  --accent-bg:rgba(79,255,176,0.06);--accent-b:rgba(79,255,176,0.15);
+  --glow1:rgba(79,255,176,0.04);--glow2:rgba(61,214,245,0.03);--glow3:rgba(167,139,250,0.03);
+  --code-bg:rgba(14,18,37,0.8);--tag-bg:rgba(255,255,255,0.04);--tag-border:rgba(255,255,255,0.08);
+  --gradient:linear-gradient(135deg,#4fffb0,#3dd6f5,#a78bfa);
+  --noise-opacity:0.03;
+  color:#e8ecf4;background:#06080f;
 }
 [data-theme="light"]{
-  --bg:#f0f2f8;--bg2:#e8eaf2;--surface:rgba(255,255,255,0.7);--border:rgba(0,0,0,0.08);
-  --border-h:rgba(0,0,0,0.18);--text:#1a1f35;--muted:#64748b;--muted2:#475569;
-  --accent:#00a86b;--accent2:#0099cc;--accent-bg:rgba(0,168,107,0.08);--accent-b:rgba(0,168,107,0.2);
-  --scrollbar:#d1d5e0;--code-bg:#e2e4ef;--tag-bg:rgba(0,0,0,0.05);
-  color:#1a1f35;background:#f0f2f8;
+  --bg:#f8f9fc;--bg2:#f0f1f5;--bg3:#e8e9ef;--surface:rgba(255,255,255,0.8);--surface2:rgba(255,255,255,0.9);
+  --border:rgba(0,0,0,0.06);--border-h:rgba(0,0,0,0.12);
+  --text:#111827;--text2:#374151;--muted:#9ca3af;--muted2:#6b7280;
+  --accent:#059669;--accent2:#0891b2;--accent3:#7c3aed;
+  --accent-bg:rgba(5,150,105,0.06);--accent-b:rgba(5,150,105,0.15);
+  --glow1:rgba(5,150,105,0.04);--glow2:rgba(8,145,178,0.03);--glow3:rgba(124,58,237,0.03);
+  --code-bg:rgba(232,233,239,0.8);--tag-bg:rgba(0,0,0,0.03);--tag-border:rgba(0,0,0,0.06);
+  --gradient:linear-gradient(135deg,#059669,#0891b2,#7c3aed);
+  --noise-opacity:0.02;
+  color:#111827;background:#f8f9fc;
 }
 [data-theme="cyber"]{
-  --bg:#0a001a;--bg2:#100022;--surface:rgba(180,0,255,0.06);--border:rgba(180,0,255,0.15);
-  --border-h:rgba(255,0,200,0.4);--text:#f0e0ff;--muted:#9f78c0;--muted2:#c8a8e0;
-  --accent:#ff00cc;--accent2:#aa00ff;--accent-bg:rgba(255,0,204,0.08);--accent-b:rgba(255,0,204,0.25);
-  --scrollbar:#2d0044;--code-bg:#0e0020;--tag-bg:rgba(180,0,255,0.1);
-  color:#f0e0ff;background:#0a001a;
+  --bg:#08001a;--bg2:#0c0024;--bg3:#10002e;--surface:rgba(168,0,255,0.04);--surface2:rgba(168,0,255,0.06);
+  --border:rgba(168,0,255,0.1);--border-h:rgba(255,0,180,0.25);
+  --text:#f0e4ff;--text2:#d4c0ee;--muted:#7b5a9e;--muted2:#a07ec8;
+  --accent:#ff00cc;--accent2:#aa00ff;--accent3:#00ffcc;
+  --accent-bg:rgba(255,0,204,0.06);--accent-b:rgba(255,0,204,0.18);
+  --glow1:rgba(255,0,204,0.04);--glow2:rgba(170,0,255,0.03);--glow3:rgba(0,255,204,0.03);
+  --code-bg:rgba(12,0,36,0.8);--tag-bg:rgba(168,0,255,0.06);--tag-border:rgba(168,0,255,0.12);
+  --gradient:linear-gradient(135deg,#ff00cc,#aa00ff,#00ffcc);
+  --noise-opacity:0.04;
+  color:#f0e4ff;background:#08001a;
 }
 [data-theme="amber"]{
-  --bg:#0f0a00;--bg2:#1a1200;--surface:rgba(255,180,0,0.06);--border:rgba(255,180,0,0.12);
-  --border-h:rgba(255,200,0,0.35);--text:#fff8e0;--muted:#9a8040;--muted2:#c8a850;
-  --accent:#ffb300;--accent2:#ff8c00;--accent-bg:rgba(255,179,0,0.08);--accent-b:rgba(255,179,0,0.22);
-  --scrollbar:#2a1e00;--code-bg:#130d00;--tag-bg:rgba(255,179,0,0.08);
-  color:#fff8e0;background:#0f0a00;
+  --bg:#0c0800;--bg2:#141000;--bg3:#1c1600;--surface:rgba(255,180,0,0.04);--surface2:rgba(255,180,0,0.06);
+  --border:rgba(255,180,0,0.08);--border-h:rgba(255,200,0,0.2);
+  --text:#fff5e0;--text2:#e8d5b0;--muted:#7a6530;--muted2:#a08840;
+  --accent:#ffb300;--accent2:#ff8c00;--accent3:#ffd700;
+  --accent-bg:rgba(255,179,0,0.06);--accent-b:rgba(255,179,0,0.15);
+  --glow1:rgba(255,179,0,0.04);--glow2:rgba(255,140,0,0.03);--glow3:rgba(255,215,0,0.03);
+  --code-bg:rgba(20,16,0,0.8);--tag-bg:rgba(255,179,0,0.05);--tag-border:rgba(255,179,0,0.1);
+  --gradient:linear-gradient(135deg,#ffb300,#ff8c00,#ffd700);
+  --noise-opacity:0.03;
+  color:#fff5e0;background:#0c0800;
 }
 
-::-webkit-scrollbar-thumb{background:var(--scrollbar)}
+/* NOISE OVERLAY */
+.noise{position:fixed;inset:0;pointer-events:none;z-index:50;opacity:var(--noise-opacity);
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:128px 128px}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(120%)}to{transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-20px) scale(1.02)}50%{transform:translate(-10px,-40px) scale(0.98)}75%{transform:translate(-30px,-10px) scale(1.01)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}33%{transform:translate(-40px,20px)}66%{transform:translate(20px,-30px)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 var(--accent-b)}50%{box-shadow:0 0 0 6px transparent}}
+
+.reveal{opacity:0;transform:translateY(50px);transition:opacity 0.8s cubic-bezier(0.22,1,0.36,1),transform 0.8s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hide-mobile{display:none!important}
+  .hero-title{font-size:clamp(2.5rem,12vw,4rem)!important}
+  .grid-cols-2{grid-template-columns:1fr!important}
+  .nav-links{display:none!important}
+  .section-content{padding:0 20px!important}
+  .about-grid{grid-template-columns:1fr!important}
+}
 </style>
 </head>
 <body data-theme="dark">
-
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+<div class="noise"></div>
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
+const {useState,useEffect,useRef,useCallback,useMemo,createContext,useContext}=React;
 
-// ── THEME CONFIG ─────────────────────────────────────
-const THEMES = [
-  { id:'dark',  label:'Dark',   icon:'🌑' },
-  { id:'light', label:'Light',  icon:'☀️' },
-  { id:'cyber', label:'Cyber',  icon:'⚡' },
-  { id:'amber', label:'Amber',  icon:'🔥' },
+// ── DATA ──────────────────────────────────────────────
+const THEMES=[
+  {id:'dark',label:'Dark',icon:'◐'},
+  {id:'light',label:'Light',icon:'○'},
+  {id:'cyber',label:'Cyber',icon:'◈'},
+  {id:'amber',label:'Amber',icon:'◉'},
 ];
 
-// ── TERMINAL LINES ───────────────────────────────────
-const TERMINAL_LINES = [
-  { t:0,   txt:'$ whoami',                     color:'accent' },
-  { t:600, txt:'→ deepak mahato',               color:'text' },
-  { t:1100,txt:'$ cat skills.json | jq .core',  color:'accent' },
-  { t:1700,txt:'→ ["Laravel","PHP","MySQL","Redis","GCP"]', color:'muted' },
-  { t:2300,txt:'$ git log --oneline -3',         color:'accent' },
-  { t:2900,txt:'feat: GenAI CRM integration',    color:'green' },
-  { t:3200,txt:'fix: JWT refresh token edge case',color:'green' },
-  { t:3500,txt:'perf: Redis cache quotation engine',color:'green'},
-  { t:4100,txt:'$ _',                            color:'accent' },
+const TERMINAL_LINES=[
+  {t:0,txt:'$ whoami',color:'accent'},
+  {t:500,txt:'→ deepak mahato',color:'text'},
+  {t:900,txt:'$ cat skills.json | jq .core',color:'accent'},
+  {t:1400,txt:'→ ["Laravel","PHP","MySQL","Redis","GCP"]',color:'muted'},
+  {t:1900,txt:'$ git log --oneline -3',color:'accent'},
+  {t:2400,txt:'feat: GenAI CRM integration',color:'green'},
+  {t:2650,txt:'fix: JWT refresh token edge case',color:'green'},
+  {t:2900,txt:'perf: Redis cache quotation engine',color:'green'},
+  {t:3400,txt:'$ _',color:'accent'},
 ];
 
-// ── SKILLS DATA ──────────────────────────────────────
-const SKILLS = [
-  { group:'Languages',       items:['PHP','Python','JavaScript','SQL','HTML/CSS'] },
-  { group:'Frameworks',      items:['Laravel','FastAPI'] },
-  { group:'Databases',       items:['MySQL','PostgreSQL','MongoDB'] },
-  { group:'Architecture',    items:['REST APIs','DDD','Event-Driven','Modular Monolith','Service Layer'] },
-  { group:'Queue & Cache',   items:['Redis','Laravel Queues','Pub/Sub','Webhooks','Job Batching'] },
-  { group:'Security',        items:['JWT','OAuth2','RBAC','AES Encryption','Rate Limiting','Audit Logging'] },
-  { group:'Cloud & DevOps',  items:['GCP','Git','Postman','Swagger/OpenAPI'] },
-  { group:'AI Stack',        items:['LLM Integration','Gemini API','Ollama','OCR Pipelines','Prompt Engineering','llama.cpp'] },
+const SKILLS=[
+  {group:'Languages',items:['PHP','Python','JavaScript','SQL','HTML/CSS']},
+  {group:'Frameworks',items:['Laravel','FastAPI']},
+  {group:'Databases',items:['MySQL','PostgreSQL','MongoDB']},
+  {group:'Architecture',items:['REST APIs','DDD','Event-Driven','Modular Monolith','Service Layer']},
+  {group:'Queue & Cache',items:['Redis','Laravel Queues','Pub/Sub','Webhooks','Job Batching']},
+  {group:'Security',items:['JWT','OAuth2','RBAC','AES Encryption','Rate Limiting','Audit Logging']},
+  {group:'Cloud & DevOps',items:['GCP','Git','Postman','Swagger/OpenAPI']},
+  {group:'AI Stack',items:['LLM Integration','Gemini API','Ollama','OCR Pipelines','Prompt Engineering','llama.cpp']},
 ];
 
-// ── EXPERIENCE DATA ──────────────────────────────────
-const EXP = [
+const ALL_SKILL_TAGS=['Laravel','PHP','MySQL','Redis','GCP','Python','JavaScript','FastAPI','PostgreSQL','MongoDB','REST APIs','DDD','JWT','OAuth2','RBAC','Gemini API','Ollama','LLM Integration','Webhooks','Docker'];
+
+const EXP=[
   {
-    role:'Software Developer',
-    company:'FynTune Solutions Pvt. Ltd.',
-    loc:'Mumbai',
-    period:'Nov 2023 — Feb 2026',
+    role:'Software Developer',company:'FynTune Solutions Pvt. Ltd.',loc:'Mumbai',period:'Nov 2023 — Feb 2026',duration:'2 yr 4 mo',
     bullets:[
       'Architected backend systems for Corporate Travel, Affinity, CRM, and Agent Onboarding insurance platforms.',
       'Built quotation engines, customer configs, Swagger REST APIs, real-time alerts, webhook integrations.',
@@ -111,512 +159,742 @@ const EXP = [
       'Delivered GenAI-powered CRM features, multi-SMTP email workflows, automated lead assignment.',
       'Implemented RBAC, JWT/OAuth2, rate limiting, end-to-end request auditing across all platforms.',
     ],
+    tags:['Laravel','PHP','MySQL','Redis','GCP','REST API'],
   },
   {
-    role:'Web Development Intern',
-    company:'Creative Globe Pvt. Ltd.',
-    loc:'Mumbai',
-    period:'Jun 2023 — Sep 2023',
+    role:'Web Development Intern',company:'Creative Globe Pvt. Ltd.',loc:'Mumbai',period:'Jun 2023 — Sep 2023',duration:'4 mo',
     bullets:[
       'Built backend modules and admin panel for a Gems & Jewelry B2C e-commerce platform using Laravel.',
       'Resolved production bugs, developed dynamic email templates, improved UI responsiveness.',
     ],
+    tags:['Laravel','PHP','MySQL','HTML/CSS'],
   },
 ];
 
-// ── STATIC PROJECTS (fallback) ───────────────────────
-const STATIC_PROJECTS = [
-  {
-    name:'AI Study Buddy',
-    description:'AI learning assistant generating summaries, flashcards, quizzes, and exportable PDFs via OCR ingestion and structured LLM prompt workflows.',
-    topics:['laravel','python','fastapi','gemini','ocr'],
-    html_url:'https://github.com/deecodek',
-    language:'PHP',
-    stargazers_count:0,
-  },
-  {
-    name:'Python Code Writer',
-    description:'Scaffolds complete project structures — folders, files, orchestration code — from a natural-language prompt.',
-    topics:['python','gemini-api','cli'],
-    html_url:'https://github.com/deecodek',
-    language:'Python',
-    stargazers_count:0,
-  },
+const STATIC_PROJECTS=[
+  {name:'AI Study Buddy',description:'AI learning assistant — summaries, flashcards, quizzes, PDFs via OCR + LLM prompts.',topics:['laravel','python','fastapi','gemini','ocr'],html_url:'https://github.com/deecodek',language:'PHP',stargazers_count:0},
+  {name:'Python Code Writer',description:'Scaffolds complete project structures from natural-language prompts.',topics:['python','gemini-api','cli'],html_url:'https://github.com/deecodek',language:'Python',stargazers_count:0},
 ];
 
-// ── CURSOR ────────────────────────────────────────────
-function useCursor() {
-  useEffect(() => {
-    const cursor = document.getElementById('cursor');
-    const ring   = document.getElementById('cursor-ring');
+const STATS=[
+  {label:'Years Exp',value:'2+'},
+  {label:'Platforms Built',value:'4'},
+  {label:'APIs Integrated',value:'10+'},
+  {label:'Stack',value:'Laravel'},
+];
+
+// ── HOOKS ─────────────────────────────────────────────
+function useScroll(){
+  const [data,setData]=useState({y:0,progress:0,vh:0,dir:'down'});
+  const prev=useRef(0);
+  useEffect(()=>{
+    const h=()=>{
+      const y=window.scrollY;
+      const vh=window.innerHeight;
+      const max=document.documentElement.scrollHeight-vh;
+      setData({y,progress:max>0?y/max:0,vh,dir:y>prev.current?'down':'up'});
+      prev.current=y;
+    };
+    window.addEventListener('scroll',h,{passive:true});
+    h();
+    return()=>window.removeEventListener('scroll',h);
+  },[]);
+  return data;
+}
+
+function useReveal(threshold=0.15){
+  const ref=useRef(null);
+  const [visible,setVisible]=useState(false);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){setVisible(true);obs.unobserve(el);}},{threshold,rootMargin:'0px 0px -60px 0px'});
+    obs.observe(el);
+    return()=>obs.disconnect();
+  },[threshold]);
+  return[ref,visible];
+}
+
+function useMouse(){
+  const [pos,setPos]=useState({x:0,y:0});
+  useEffect(()=>{
+    const h=e=>setPos({x:e.clientX,y:e.clientY});
+    window.addEventListener('mousemove',h,{passive:true});
+    return()=>window.removeEventListener('mousemove',h);
+  },[]);
+  return pos;
+}
+
+function useCursor(){
+  useEffect(()=>{
+    const dot=document.getElementById('cursor-dot');
+    const ring=document.getElementById('cursor-ring');
+    if(!dot||!ring)return;
     let mx=0,my=0,rx=0,ry=0;
-    const move = e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; };
-    const raf = () => { rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(raf); };
-    const over = e => { if(e.target.closest('a,button,[data-hover]')){ ring.style.transform='translate(-50%,-50%) scale(2)'; ring.style.opacity='0.6'; } };
-    const out  = () => { ring.style.transform='translate(-50%,-50%) scale(1)'; ring.style.opacity='1'; };
-    document.addEventListener('mousemove',move);
+    const move=e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';};
+    const raf=()=>{rx+=(mx-rx)*0.1;ry+=(my-ry)*0.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(raf);};
+    const over=e=>{if(e.target.closest('a,button,[data-hover]')){dot.classList.add('hovering');ring.classList.add('hovering');}};
+    const out=()=>{dot.classList.remove('hovering');ring.classList.remove('hovering');};
+    document.addEventListener('mousemove',move,{passive:true});
     document.addEventListener('mouseover',over);
     document.addEventListener('mouseout',out);
     requestAnimationFrame(raf);
-    return ()=>{ document.removeEventListener('mousemove',move); document.removeEventListener('mouseover',over); document.removeEventListener('mouseout',out); };
+    const mq=window.matchMedia('(pointer:coarse)');
+    if(mq.matches){dot.style.display='none';ring.style.display='none';}
+    return()=>{document.removeEventListener('mousemove',move);document.removeEventListener('mouseover',over);document.removeEventListener('mouseout',out);};
   },[]);
 }
 
-// ── TYPEWRITER ────────────────────────────────────────
-function Terminal() {
-  const [visible,setVisible] = useState([]);
-  useEffect(()=>{
-    TERMINAL_LINES.forEach(l=>{ setTimeout(()=>setVisible(p=>[...p,l]),l.t); });
-  },[]);
-  const colorMap = { accent:'var(--accent)', text:'var(--text)', muted:'var(--muted2)', green:'#4ade80' };
-  return (
-    <div style={{background:'var(--code-bg)',border:'1px solid var(--border)',borderRadius:14,padding:'20px 24px',fontFamily:'JetBrains Mono,monospace',fontSize:'0.78rem',lineHeight:1.8,minHeight:220,position:'relative',overflow:'hidden'}}>
-      <div style={{display:'flex',gap:6,marginBottom:14}}>
-        {['#ff5f57','#febc2e','#28c840'].map(c=><div key={c} style={{width:10,height:10,borderRadius:'50%',background:c}}/>)}
-        <span style={{marginLeft:8,fontSize:'0.65rem',color:'var(--muted)',letterSpacing:'0.1em'}}>terminal — zsh</span>
-      </div>
-      {visible.map((l,i)=>(
-        <div key={i} style={{color:colorMap[l.color]||'var(--text)',display:'flex',alignItems:'center',gap:6}}>
-          <span>{l.txt}</span>
-          {i===visible.length-1 && l.txt.endsWith('_') && <span style={{display:'inline-block',width:8,height:14,background:'var(--accent)',animation:'blink 1s step-end infinite'}}/>}
-        </div>
-      ))}
-      <style>{`@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}`}</style>
-    </div>
+// ── PRIMITIVES ────────────────────────────────────────
+function Reveal({children,delay=0,className='',style={},as='div'}){
+  const[ref,visible]=useReveal(0.1);
+  const Tag=as;
+  return <Tag ref={ref} className={`reveal ${visible?'visible':''} ${className}`} style={{transitionDelay:delay+'s',...style}}>{children}</Tag>;
+}
+
+function GradientText({children,style={}}){
+  return <span style={{background:'var(--gradient)',backgroundSize:'200% 200%',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',animation:'gradientShift 4s ease infinite',...style}}>{children}</span>;
+}
+
+function Mono({children,style={}}){
+  return <span style={{fontFamily:"'JetBrains Mono',monospace",...style}}>{children}</span>;
+}
+
+function Divider({style={}}){
+  const[ref,vis]=useReveal(0.3);
+  return <div ref={ref} style={{height:1,background:'linear-gradient(90deg,transparent,var(--border),transparent)',margin:'0 auto',maxWidth:200,opacity:vis?1:0,transform:vis?'scaleX(1)':'scaleX(0)',transition:'all 1s cubic-bezier(0.22,1,0.36,1)',transformOrigin:'center',...style}}/>;
+}
+
+function Tag({children,accent=false,glow=false}){
+  return(
+    <span data-hover style={{
+      display:'inline-flex',alignItems:'center',gap:4,
+      fontSize:'0.68rem',padding:'4px 12px',borderRadius:6,
+      fontFamily:"'JetBrains Mono',monospace",letterSpacing:'0.02em',
+      background:accent?'var(--accent-bg)':'var(--tag-bg)',
+      border:`1px solid ${accent?'var(--accent-b)':'var(--tag-border)'}`,
+      color:accent?'var(--accent)':'var(--muted2)',
+      transition:'all 0.25s',cursor:'default',
+      boxShadow:glow?'0 0 16px var(--accent-bg)':'none',
+    }}>{children}</span>
   );
 }
 
-// ── GLASS CARD ────────────────────────────────────────
-function Glass({children,style={},className='',hover=true,...p}){
-  const [hov,setHov]=useState(false);
-  return (
-    <div
-      onMouseEnter={()=>hover&&setHov(true)}
-      onMouseLeave={()=>setHov(false)}
-      style={{
-        background: hov ? 'rgba(255,255,255,0.065)' : 'var(--surface)',
-        border:`1px solid ${hov?'var(--border-h)':'var(--border)'}`,
-        backdropFilter:'blur(18px)',WebkitBackdropFilter:'blur(18px)',
-        borderRadius:18,
-        transition:'all 0.25s ease',
-        transform: hov ? 'translateY(-2px)' : 'none',
-        boxShadow: hov ? '0 12px 40px rgba(0,0,0,0.25)' : 'none',
-        ...style,
-      }}
-      {...p}
-    >{children}</div>
-  );
-}
-
-// ── TAG ───────────────────────────────────────────────
-function Tag({children,accent=false}){
-  const [h,setH]=useState(false);
-  return (
-    <span
-      onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
-      style={{
-        display:'inline-block',
-        fontSize:'0.67rem',padding:'3px 11px',borderRadius:7,cursor:'default',
-        background: h ? 'var(--accent-bg)' : (accent?'var(--accent-bg)':'var(--tag-bg)'),
-        border:`1px solid ${h?'var(--accent-b)':(accent?'var(--accent-b)':'var(--border)')}`,
-        color: h||accent ? 'var(--accent)' : 'var(--muted2)',
-        transition:'all 0.2s',
-        transform: h?'scale(1.05)':'scale(1)',
-      }}
-    >{children}</span>
-  );
-}
-
-// ── BTN ───────────────────────────────────────────────
-function Btn({children,href,solid=false,onClick,style={}}){
-  const [h,setH]=useState(false);
+function IconBtn({children,href,primary=false,style={}}){
+  const[h,setH]=useState(false);
   const s={
-    display:'inline-flex',alignItems:'center',gap:7,
-    padding:'10px 22px',borderRadius:12,border:'none',cursor:'pointer',
-    fontFamily:'JetBrains Mono,monospace',fontSize:'0.73rem',letterSpacing:'0.04em',
-    textDecoration:'none',transition:'all 0.2s',
-    transform: h?'translateY(-2px)':'translateY(0)',
-    background: solid ? (h?'#72ffc3':'var(--accent)') : (h?'rgba(255,255,255,0.08)':'var(--surface)'),
-    color: solid ? '#080c18' : 'var(--text)',
-    border: solid?'none':'1px solid var(--border)',
-    boxShadow: h && solid ? '0 0 24px var(--accent-b)' : (h?'0 4px 20px rgba(0,0,0,0.2)':'none'),
-    ...style,
+    display:'inline-flex',alignItems:'center',justifyContent:'center',gap:8,
+    padding:primary?'12px 28px':'12px 24px',
+    borderRadius:10,
+    fontFamily:"'JetBrains Mono',monospace",fontSize:'0.72rem',letterSpacing:'0.03em',
+    transition:'all 0.3s cubic-bezier(0.22,1,0.36,1)',
+    transform:h?'translateY(-2px)':'none',
+    background:primary?(h?'var(--text)':'var(--accent)'):(h?'var(--surface2)':'var(--surface)'),
+    color:primary?'var(--bg)':'var(--text2)',
+    border:primary?'none':`1px solid ${h?'var(--border-h)':'var(--border)'}`,
+    boxShadow:h?(primary?'0 8px 30px var(--accent-b)':'0 4px 20px rgba(0,0,0,0.15)'):'none',
+    ...style
   };
-  if(href) return <a href={href} target="_blank" rel="noopener" style={s} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} data-hover>{children}</a>;
-  return <button style={s} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} onClick={onClick} data-hover>{children}</button>;
+  return <a href={href} target="_blank" rel="noopener" style={s} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} data-hover>{children}</a>;
 }
 
-// ── SECTION LABEL ─────────────────────────────────────
-function SectionLabel({children}){
-  return (
-    <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:28}}>
-      <span style={{fontSize:'0.62rem',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',whiteSpace:'nowrap'}}>{children}</span>
-      <div style={{flex:1,height:1,background:'linear-gradient(to right, var(--border), transparent)'}}/>
+// ── BACKGROUND ────────────────────────────────────────
+function Background({scrollY}){
+  return(
+    <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:0,overflow:'hidden'}}>
+      {/* Mesh gradient blobs */}
+      <div style={{position:'absolute',top:'-15%',left:'-10%',width:'55%',height:'55%',borderRadius:'50%',
+        background:'radial-gradient(circle,var(--glow1) 0%,transparent 70%)',filter:'blur(60px)',
+        transform:`translate(${scrollY*0.02}px,${scrollY*0.04}px)`,animation:'float1 25s ease-in-out infinite'}}/>
+      <div style={{position:'absolute',top:'25%',right:'-8%',width:'45%',height:'45%',borderRadius:'50%',
+        background:'radial-gradient(circle,var(--glow2) 0%,transparent 70%)',filter:'blur(60px)',
+        transform:`translate(${-scrollY*0.015}px,${-scrollY*0.03}px)`,animation:'float2 30s ease-in-out infinite'}}/>
+      <div style={{position:'absolute',bottom:'-10%',left:'25%',width:'50%',height:'50%',borderRadius:'50%',
+        background:'radial-gradient(circle,var(--glow3) 0%,transparent 70%)',filter:'blur(60px)',
+        transform:`translate(${scrollY*0.01}px,${-scrollY*0.05}px)`,animation:'float1 35s ease-in-out infinite reverse'}}/>
+      {/* Subtle grid */}
+      <div style={{position:'absolute',inset:0,opacity:0.4,
+        backgroundImage:`radial-gradient(circle,var(--border) 1px,transparent 1px)`,
+        backgroundSize:'32px 32px',transform:`translateY(${scrollY*0.02}px)`}}/>
     </div>
   );
 }
 
-// ── GITHUB REPOS ─────────────────────────────────────
-function Projects() {
-  const [repos,setRepos]=useState([]);
-  const [loading,setLoading]=useState(true);
-  const [err,setErr]=useState(false);
-
-  useEffect(()=>{
-    fetch('https://api.github.com/users/deecodek/repos?sort=updated&per_page=20&type=public')
-      .then(r=>r.json())
-      .then(data=>{
-        if(Array.isArray(data) && data.length>0){
-          setRepos(data.filter(r=>!r.fork).slice(0,12));
-        } else {
-          setRepos(STATIC_PROJECTS);
-          setErr(true);
-        }
-        setLoading(false);
-      })
-      .catch(()=>{ setRepos(STATIC_PROJECTS); setErr(true); setLoading(false); });
-  },[]);
-
-  const langColor = { PHP:'#4f5d95',Python:'#3572A5',JavaScript:'#f1e05a',TypeScript:'#3178c6',HTML:'#e34c26',CSS:'#563d7c',default:'var(--muted)' };
-
-  if(loading) return (
-    <div style={{textAlign:'center',padding:'60px 0',color:'var(--muted)',fontSize:'0.8rem'}}>
-      <div style={{display:'inline-block',width:24,height:24,border:'2px solid var(--border)',borderTopColor:'var(--accent)',borderRadius:'50%',animation:'spin 0.8s linear infinite',marginBottom:12}}/>
-      <br/>fetching repos...
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-    </div>
-  );
-
-  return (
-    <div>
-      {err && <p style={{fontSize:'0.72rem',color:'var(--muted)',marginBottom:16}}>// GitHub API unavailable — showing featured projects</p>}
-      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:14}}>
-        {repos.map((r,i)=>(
-          <RepoCard key={i} repo={r} langColor={langColor}/>
-        ))}
+// ── SCROLL PROGRESS ───────────────────────────────────
+function ScrollProgress({progress}){
+  return(
+    <>
+      <div style={{position:'fixed',top:0,left:0,right:0,height:1,zIndex:200,background:'var(--border)'}}>
+        <div style={{height:'100%',background:'var(--gradient)',backgroundSize:'200% 200%',animation:'gradientShift 3s ease infinite',
+          width:(progress*100)+'%',transition:'width 0.1s linear',boxShadow:'0 0 20px var(--accent-b)'}}/>
       </div>
+    </>
+  );
+}
+
+// ── SIDE NAV DOTS ─────────────────────────────────────
+function SideNav({active}){
+  const sections=['home','about','skills','work','projects','education'];
+  const scroll=id=>{if(id==='home')window.scrollTo({top:0,behavior:'smooth'});else document.getElementById(id)?.scrollIntoView({behavior:'smooth'});};
+  return(
+    <div className="hide-mobile" style={{position:'fixed',right:24,top:'50%',transform:'translateY(-50%)',zIndex:100,display:'flex',flexDirection:'column',gap:12,alignItems:'center'}}>
+      {sections.map(id=>(
+        <button key={id} onClick={()=>scroll(id)} data-hover title={id}
+          style={{width:active===id?8:5,height:active===id?8:5,borderRadius:'50%',
+            background:active===id?'var(--accent)':'var(--muted)',
+            transition:'all 0.3s',opacity:active===id?1:0.4,
+            boxShadow:active===id?'0 0 10px var(--accent-b)':'none'}}/>
+      ))}
     </div>
   );
 }
 
-function RepoCard({repo,langColor}){
-  const [h,setH]=useState(false);
-  const lc = langColor[repo.language]||langColor.default;
-  return (
-    <a
-      href={repo.html_url} target="_blank" rel="noopener"
-      onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
-      style={{
-        display:'flex',flexDirection:'column',gap:10,padding:'22px 24px',
-        borderRadius:16,textDecoration:'none',color:'var(--text)',
-        background: h?'rgba(255,255,255,0.065)':'var(--surface)',
-        border:`1px solid ${h?'var(--border-h)':'var(--border)'}`,
-        backdropFilter:'blur(16px)',transition:'all 0.22s',
-        transform:h?'translateY(-3px)':'none',
-        boxShadow:h?'0 8px 32px rgba(0,0,0,0.3)':'none',
-        position:'relative',overflow:'hidden',
-      }}
-      data-hover
-    >
-      {h && <div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 80% 20%, var(--accent-bg), transparent 60%)',pointerEvents:'none'}}/>}
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-        <span style={{fontSize:'0.7rem',color:'var(--muted)',letterSpacing:'0.06em'}}>
-          {String(repo.stargazers_count||0).padStart(2,'0')} ★
-        </span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--muted)" style={{flexShrink:0,transform:h?'rotate(-45deg)':'none',transition:'transform 0.2s'}}><path d="M7 17L17 7M17 7H7M17 7v10"/><path stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" fill="none"/></svg>
-      </div>
-      <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text)',lineHeight:1.2}}>{repo.name}</div>
-      <div style={{fontSize:'0.75rem',color:'var(--muted2)',lineHeight:1.6,flex:1}}>{repo.description||'No description.'}</div>
-      <div style={{display:'flex',flexWrap:'wrap',gap:5}}>
-        {(repo.topics||[]).slice(0,4).map(t=><Tag key={t} accent>{t}</Tag>)}
-      </div>
-      {repo.language && (
-        <div style={{display:'flex',alignItems:'center',gap:6,marginTop:2}}>
-          <div style={{width:8,height:8,borderRadius:'50%',background:lc}}/>
-          <span style={{fontSize:'0.68rem',color:'var(--muted)'}}>{repo.language}</span>
-        </div>
-      )}
-    </a>
-  );
-}
+// ── NAVBAR ────────────────────────────────────────────
+function Navbar({theme,setTheme,active,scrollY}){
+  const scrolled=scrollY>80;
+  const[menuOpen,setMenuOpen]=useState(false);
+  const scroll=id=>{if(id==='home')window.scrollTo({top:0,behavior:'smooth'});else document.getElementById(id)?.scrollIntoView({behavior:'smooth'});setMenuOpen(false);};
 
-// ── THEME SWITCHER ────────────────────────────────────
-function ThemeSwitcher({theme,setTheme}){
-  const [open,setOpen]=useState(false);
-  return (
-    <div style={{position:'relative'}}>
-      <button
-        onClick={()=>setOpen(o=>!o)} data-hover
-        style={{
-          background:'var(--surface)',border:'1px solid var(--border)',
-          borderRadius:10,padding:'7px 14px',cursor:'pointer',
-          fontFamily:'JetBrains Mono',fontSize:'0.7rem',color:'var(--text)',
-          display:'flex',alignItems:'center',gap:6,transition:'all 0.2s',
-        }}
-      >
-        {THEMES.find(t=>t.id===theme)?.icon} theme
-        <span style={{fontSize:'0.6rem',color:'var(--muted)'}}>{open?'▲':'▼'}</span>
-      </button>
-      {open && (
-        <div style={{
-          position:'absolute',top:'calc(100% + 8px)',right:0,
-          background:'var(--bg2)',border:'1px solid var(--border)',
-          borderRadius:12,padding:6,zIndex:200,minWidth:130,
-          backdropFilter:'blur(20px)',boxShadow:'0 16px 40px rgba(0,0,0,0.4)',
-        }}>
-          {THEMES.map(t=>(
-            <button key={t.id} onClick={()=>{setTheme(t.id);setOpen(false);}} data-hover
-              style={{
-                display:'flex',alignItems:'center',gap:10,width:'100%',
-                padding:'9px 12px',borderRadius:8,border:'none',cursor:'pointer',
-                background:theme===t.id?'var(--accent-bg)':'transparent',
-                color:theme===t.id?'var(--accent)':'var(--text)',
-                fontFamily:'JetBrains Mono',fontSize:'0.72rem',transition:'all 0.15s',
-              }}
-            >{t.icon} {t.label}</button>
+  return(
+    <nav style={{position:'fixed',top:scrolled?12:0,left:'50%',transform:'translateX(-50%)',zIndex:150,
+      width:scrolled?'min(680px,92vw)':'100%',padding:scrolled?'0 6px':'0 32px',transition:'all 0.5s cubic-bezier(0.22,1,0.36,1)'}}>
+      <div style={{
+        display:'flex',alignItems:'center',justifyContent:'space-between',height:scrolled?50:60,padding:'0 20px',
+        background:scrolled?'var(--bg2)':'transparent',
+        border:scrolled?'1px solid var(--border)':'1px solid transparent',
+        borderRadius:scrolled?14:0,
+        backdropFilter:scrolled?'blur(20px) saturate(1.4)':'none',
+        transition:'all 0.5s cubic-bezier(0.22,1,0.36,1)',
+      }}>
+        <button onClick={()=>scroll('home')} data-hover style={{display:'flex',alignItems:'center',gap:6}}>
+          <span style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'0.95rem',color:'var(--text)',letterSpacing:'-0.03em'}}>
+            DM<span style={{color:'var(--accent)'}}>.</span>
+          </span>
+        </button>
+
+        <div className="nav-links" style={{display:'flex',alignItems:'center',gap:2}}>
+          {['about','skills','work','projects'].map(id=>(
+            <button key={id} onClick={()=>scroll(id)} data-hover
+              style={{padding:'6px 14px',borderRadius:8,fontSize:'0.68rem',letterSpacing:'0.06em',textTransform:'uppercase',
+                fontFamily:"'JetBrains Mono',monospace",
+                color:active===id?'var(--accent)':'var(--muted)',
+                background:active===id?'var(--accent-bg)':'transparent',
+                transition:'all 0.25s'}}>
+              {id}
+            </button>
           ))}
         </div>
-      )}
-    </div>
-  );
-}
 
-// ── NAV ───────────────────────────────────────────────
-const NAV_ITEMS = ['home','about','skills','work','projects','education'];
-function Nav({theme,setTheme,active}){
-  const [scrolled,setScrolled]=useState(false);
-  useEffect(()=>{
-    const h=()=>setScrolled(window.scrollY>40);
-    window.addEventListener('scroll',h);
-    return ()=>window.removeEventListener('scroll',h);
-  },[]);
-  const scroll=id=>{ if(id==='home'){window.scrollTo({top:0,behavior:'smooth'});return;} document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); };
-  return (
-    <nav style={{
-      position:'fixed',top:0,left:0,right:0,zIndex:100,
-      height:58,display:'flex',alignItems:'center',justifyContent:'space-between',
-      padding:'0 28px',
-      background: scrolled?'rgba(8,12,24,0.85)':'transparent',
-      backdropFilter: scrolled?'blur(24px)':'none',
-      WebkitBackdropFilter: scrolled?'blur(24px)':'none',
-      borderBottom: scrolled?'1px solid var(--border)':'none',
-      transition:'all 0.3s',
-    }}>
-      <button onClick={()=>scroll('home')} data-hover
-        style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'1rem',color:'var(--text)',background:'none',border:'none',cursor:'pointer',letterSpacing:'-0.02em'}}>
-        DM<span style={{color:'var(--accent)'}}>.</span>
-      </button>
-      <div style={{display:'flex',alignItems:'center',gap:4}}>
-        {NAV_ITEMS.map(id=>(
-          <button key={id} onClick={()=>scroll(id)} data-hover
-            style={{
-              background: active===id?'var(--accent-bg)':'transparent',
-              border:'none',borderRadius:8,padding:'5px 12px',cursor:'pointer',
-              fontFamily:'JetBrains Mono',fontSize:'0.65rem',letterSpacing:'0.1em',textTransform:'uppercase',
-              color: active===id?'var(--accent)':'var(--muted)',
-              transition:'all 0.2s',
-            }}
-          >{id}</button>
-        ))}
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <ThemeSwitcher theme={theme} setTheme={setTheme}/>
+          <IconBtn href="mailto:deepakddm1@gmail.com" primary style={{padding:'8px 18px',fontSize:'0.65rem'}}>
+            Let's talk
+          </IconBtn>
+        </div>
       </div>
-      <ThemeSwitcher theme={theme} setTheme={setTheme}/>
     </nav>
   );
 }
 
-// ── MAIN APP ──────────────────────────────────────────
-function App(){
-  const [theme,setTheme]=useState('dark');
-  const [active,setActive]=useState('home');
-  useCursor();
+function ThemeSwitcher({theme,setTheme}){
+  const[open,setOpen]=useState(false);
+  const idx=THEMES.findIndex(t=>t.id===theme);
+  const next=()=>{const n=THEMES[(idx+1)%THEMES.length];setTheme(n.id);};
+  return(
+    <button onClick={next} data-hover
+      style={{width:32,height:32,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',
+        background:'var(--surface)',border:'1px solid var(--border)',
+        fontSize:'0.8rem',color:'var(--text)',transition:'all 0.2s',
+        fontFamily:"'JetBrains Mono',monospace"}}>
+      {THEMES[idx]?.icon}
+    </button>
+  );
+}
 
+// ── TERMINAL ──────────────────────────────────────────
+function Terminal(){
+  const[visible,setVisible]=useState([]);
+  const[ref,isVis]=useReveal(0.2);
+  const started=useRef(false);
   useEffect(()=>{
-    document.body.setAttribute('data-theme',theme);
-  },[theme]);
+    if(isVis&&!started.current){started.current=true;TERMINAL_LINES.forEach(l=>{setTimeout(()=>setVisible(p=>[...p,l]),l.t);});}
+  },[isVis]);
+  const cm={accent:'var(--accent)',text:'var(--text)',muted:'var(--muted2)',green:'#4ade80'};
+  return(
+    <div ref={ref} style={{background:'var(--code-bg)',border:'1px solid var(--border)',borderRadius:12,padding:'18px 22px',
+      fontFamily:"'JetBrains Mono',monospace",fontSize:'0.72rem',lineHeight:1.9,minHeight:200,
+      backdropFilter:'blur(20px)',position:'relative',overflow:'hidden'}}>
+      {/* Top bar */}
+      <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:16,paddingBottom:12,borderBottom:'1px solid var(--border)'}}>
+        <div style={{display:'flex',gap:5}}>
+          {['#ff5f57','#febc2e','#28c840'].map(c=><div key={c} style={{width:8,height:8,borderRadius:'50%',background:c,opacity:0.8}}/>)}
+        </div>
+        <span style={{flex:1,textAlign:'center',fontSize:'0.6rem',color:'var(--muted)',letterSpacing:'0.1em'}}>~/deepak — zsh</span>
+      </div>
+      {visible.map((l,i)=>(
+        <div key={i} style={{color:cm[l.color]||'var(--text)'}}>
+          {l.txt}
+          {i===visible.length-1&&l.txt.endsWith('_')&&<span style={{display:'inline-block',width:7,height:13,background:'var(--accent)',marginLeft:2,animation:'blink 1s step-end infinite',verticalAlign:'text-bottom'}}/>}
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  // Active section tracker
+// ── MARQUEE ───────────────────────────────────────────
+function SkillMarquee(){
+  const items=[...ALL_SKILL_TAGS,...ALL_SKILL_TAGS];
+  return(
+    <div style={{overflow:'hidden',padding:'20px 0',position:'relative'}}>
+      <div style={{position:'absolute',left:0,top:0,bottom:0,width:80,background:'linear-gradient(90deg,var(--bg),transparent)',zIndex:2}}/>
+      <div style={{position:'absolute',right:0,top:0,bottom:0,width:80,background:'linear-gradient(270deg,var(--bg),transparent)',zIndex:2}}/>
+      <div style={{display:'flex',gap:14,animation:'marquee 30s linear infinite',width:'max-content'}}>
+        {items.map((s,i)=>(
+          <span key={i} style={{padding:'6px 16px',borderRadius:8,fontSize:'0.7rem',whiteSpace:'nowrap',
+            fontFamily:"'JetBrains Mono',monospace",letterSpacing:'0.03em',
+            background:'var(--surface)',border:'1px solid var(--border)',color:'var(--muted2)',
+            transition:'all 0.2s'}}>{s}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── SECTION HEADER ────────────────────────────────────
+function SectionHeader({label,number,description}){
+  return(
+    <Reveal style={{marginBottom:48}}>
+      <div style={{display:'flex',alignItems:'baseline',gap:12,marginBottom:description?8:0}}>
+        <Mono style={{fontSize:'0.65rem',color:'var(--accent)',opacity:0.5,letterSpacing:'0.08em'}}>{number}</Mono>
+        <h2 style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1.6rem',color:'var(--text)',letterSpacing:'-0.02em'}}>{label}</h2>
+      </div>
+      {description&&<p style={{fontSize:'0.8rem',color:'var(--muted)',marginLeft:40,maxWidth:400,lineHeight:1.7}}>{description}</p>}
+      <div style={{marginTop:16,marginLeft:40,height:1,maxWidth:60,background:'var(--accent)',opacity:0.3,animation:'lineGrow 1s cubic-bezier(0.22,1,0.36,1) both'}}/>
+    </Reveal>
+  );
+}
+
+// ── GLASS CARD ────────────────────────────────────────
+function Card({children,style={},hover=true,gradient=false,className=''}){
+  const[h,setH]=useState(false);
+  return(
+    <div className={className}
+      onMouseEnter={()=>hover&&setH(true)} onMouseLeave={()=>setH(false)}
+      style={{
+        position:'relative',borderRadius:16,overflow:'hidden',
+        background:h?'var(--surface2)':'var(--surface)',
+        border:`1px solid ${h?'var(--border-h)':'var(--border)'}`,
+        backdropFilter:'blur(16px)',
+        transition:'all 0.35s cubic-bezier(0.22,1,0.36,1)',
+        transform:h?'translateY(-3px)':'none',
+        boxShadow:h?'0 20px 60px rgba(0,0,0,0.15)':'none',
+        ...style,
+      }}>
+      {/* Gradient border glow on hover */}
+      {gradient&&h&&<div style={{position:'absolute',inset:-1,borderRadius:17,padding:1,
+        background:'var(--gradient)',backgroundSize:'200% 200%',animation:'gradientShift 3s ease infinite',
+        WebkitMask:'linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)',
+        WebkitMaskComposite:'xor',maskComposite:'exclude',opacity:0.5,pointerEvents:'none'}}/>}
+      {children}
+    </div>
+  );
+}
+
+// ── PROJECTS ──────────────────────────────────────────
+function Projects(){
+  const[repos,setRepos]=useState([]);
+  const[loading,setLoading]=useState(true);
+  const[err,setErr]=useState(false);
   useEffect(()=>{
-    const sections=['about','skills','work','projects','education'];
-    const obs=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});
-    },{threshold:0.3});
-    sections.forEach(id=>{ const el=document.getElementById(id); if(el)obs.observe(el); });
-    const heroObs=new IntersectionObserver(([e])=>{if(e.isIntersecting)setActive('home');},{threshold:0.5});
-    const hero=document.getElementById('home-hero');
-    if(hero)heroObs.observe(hero);
-    return ()=>obs.disconnect();
+    fetch('https://api.github.com/users/deecodek/repos?sort=updated&per_page=20&type=public')
+      .then(r=>r.json())
+      .then(data=>{
+        if(Array.isArray(data)&&data.length>0)setRepos(data.filter(r=>!r.fork).slice(0,8));
+        else{setRepos(STATIC_PROJECTS);setErr(true);}
+        setLoading(false);
+      }).catch(()=>{setRepos(STATIC_PROJECTS);setErr(true);setLoading(false);});
   },[]);
+  const lc={PHP:'#4f5d95',Python:'#3572A5',JavaScript:'#f1e05a',TypeScript:'#3178c6',HTML:'#e34c26',default:'var(--muted)'};
+  if(loading)return(
+    <div style={{textAlign:'center',padding:'60px 0',color:'var(--muted)',fontSize:'0.75rem'}}>
+      <div style={{display:'inline-block',width:20,height:20,border:'2px solid var(--border)',borderTopColor:'var(--accent)',borderRadius:'50%',animation:'spin 0.8s linear infinite',marginBottom:10}}/>
+      <br/><Mono>fetching repos...</Mono>
+    </div>
+  );
+  return(
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:16}}>
+      {repos.map((r,i)=>(
+        <Reveal key={i} delay={i*0.06}>
+          <a href={r.html_url} target="_blank" rel="noopener" data-hover style={{display:'block',textDecoration:'none',color:'var(--text)'}}>
+            <Card gradient style={{padding:'28px 28px 24px',height:'100%',display:'flex',flexDirection:'column',gap:12}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <Mono style={{fontSize:'0.62rem',color:'var(--muted)',letterSpacing:'0.06em'}}>{String(r.stargazers_count||0).padStart(2,'0')} ★</Mono>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7 17 10-10M7 7h10v10"/></svg>
+              </div>
+              <h3 style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1rem',lineHeight:1.2}}>{r.name}</h3>
+              <p style={{fontSize:'0.75rem',color:'var(--muted2)',lineHeight:1.65,flex:1}}>{r.description||'No description.'}</p>
+              <div style={{display:'flex',flexWrap:'wrap',gap:5,marginTop:4}}>
+                {(r.topics||[]).slice(0,3).map(t=><Tag key={t} accent>{t}</Tag>)}
+              </div>
+              {r.language&&(
+                <div style={{display:'flex',alignItems:'center',gap:6,marginTop:4}}>
+                  <div style={{width:7,height:7,borderRadius:'50%',background:lc[r.language]||lc.default}}/>
+                  <Mono style={{fontSize:'0.65rem',color:'var(--muted)'}}>{r.language}</Mono>
+                </div>
+              )}
+            </Card>
+          </a>
+        </Reveal>
+      ))}
+    </div>
+  );
+}
 
-  const cx={maxWidth:880,margin:'0 auto',padding:'0 28px'};
-  const sec={padding:'80px 0'};
+// ── HERO ──────────────────────────────────────────────
+function Hero({scrollY}){
+  const opacity=Math.max(0,1-scrollY/700);
+  return(
+    <section id="home-hero" style={{minHeight:'100vh',display:'flex',alignItems:'center',position:'relative',paddingTop:80}}>
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'0 32px',width:'100%'}}>
+        <div style={{transform:`translateY(${scrollY*0.15}px)`,opacity,transition:'opacity 0.05s'}}>
 
-  return (
-    <>
-      <Nav theme={theme} setTheme={setTheme} active={active}/>
+          {/* Status badge */}
+          <Reveal delay={0.1}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:8,
+              padding:'5px 14px',borderRadius:100,marginBottom:28,
+              background:'var(--accent-bg)',border:'1px solid var(--accent-b)'}}>
+              <div style={{width:5,height:5,borderRadius:'50%',background:'var(--accent)',animation:'dotPulse 2s ease-in-out infinite'}}/>
+              <Mono style={{fontSize:'0.62rem',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--accent)'}}>open to opportunities</Mono>
+            </div>
+          </Reveal>
 
-      {/* Orbs */}
-      <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:0,overflow:'hidden'}}>
-        <div style={{position:'absolute',top:-200,left:-180,width:580,height:580,borderRadius:'50%',background:'radial-gradient(circle,rgba(79,255,176,0.07) 0%,transparent 68%)',animation:'o1 14s ease-in-out infinite alternate'}}/>
-        <div style={{position:'absolute',bottom:-160,right:-120,width:460,height:460,borderRadius:'50%',background:'radial-gradient(circle,rgba(61,214,245,0.06) 0%,transparent 68%)',animation:'o2 18s ease-in-out infinite alternate'}}/>
-        <style>{`
-          @keyframes o1{from{transform:translate(0,0)}to{transform:translate(70px,55px)}}
-          @keyframes o2{from{transform:translate(0,0)}to{transform:translate(-55px,-70px)}}
-        `}</style>
+          {/* Title */}
+          <Reveal delay={0.2}>
+            <h1 className="hero-title" style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(3.2rem,8vw,5.8rem)',fontWeight:800,lineHeight:1.0,letterSpacing:'-0.04em',marginBottom:24}}>
+              <span style={{display:'block',overflow:'hidden'}}><span style={{display:'inline-block',animation:'slideUp 1s 0.3s cubic-bezier(0.22,1,0.36,1) both'}}>Deepak</span></span>
+              <span style={{display:'block',overflow:'hidden'}}><span style={{display:'inline-block',animation:'slideUp 1s 0.5s cubic-bezier(0.22,1,0.36,1) both'}}><GradientText>Mahato.</GradientText></span></span>
+            </h1>
+          </Reveal>
+
+          {/* Subtitle */}
+          <Reveal delay={0.4}>
+            <p style={{fontSize:'0.88rem',color:'var(--muted2)',maxWidth:480,lineHeight:1.8,marginBottom:36,fontWeight:300}}>
+              Backend developer specialising in <strong style={{color:'var(--text)',fontWeight:500}}>Laravel</strong> &
+              <strong style={{color:'var(--text)',fontWeight:500}}> PHP</strong> — building fintech platforms,
+              REST APIs, and AI integrations from Mumbai.
+            </p>
+          </Reveal>
+
+          {/* CTA */}
+          <Reveal delay={0.5}>
+            <div style={{display:'flex',gap:10,flexWrap:'wrap',marginBottom:56}}>
+              <IconBtn href="mailto:deepakddm1@gmail.com" primary>
+                <span>↗</span> Get in touch
+              </IconBtn>
+              <IconBtn href="https://github.com/deecodek">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+              </IconBtn>
+              <IconBtn href="https://linkedin.com/in/deepak-mahato-0170a0203">
+                LinkedIn ↗
+              </IconBtn>
+            </div>
+          </Reveal>
+
+          {/* Stats row */}
+          <Reveal delay={0.6}>
+            <div style={{display:'flex',gap:0,borderRadius:12,overflow:'hidden',border:'1px solid var(--border)',background:'var(--surface)',marginBottom:48,maxWidth:520}}>
+              {STATS.map((s,i)=>(
+                <div key={i} style={{flex:1,padding:'16px 0',textAlign:'center',borderRight:i<STATS.length-1?'1px solid var(--border)':'none'}}>
+                  <div style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'1.1rem',color:'var(--accent)',marginBottom:2}}>{s.value}</div>
+                  <Mono style={{fontSize:'0.58rem',color:'var(--muted)',letterSpacing:'0.06em',textTransform:'uppercase'}}>{s.label}</Mono>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* Terminal */}
+          <Reveal delay={0.7}>
+            <div style={{transform:`translateY(${-scrollY*0.05}px)`}}>
+              <Terminal/>
+            </div>
+          </Reveal>
+        </div>
       </div>
 
-      <div style={{position:'relative',zIndex:1}}>
+      {/* Scroll cue */}
+      <div style={{position:'absolute',bottom:32,left:'50%',transform:'translateX(-50%)',display:'flex',flexDirection:'column',alignItems:'center',gap:8,
+        opacity:Math.max(0,1-scrollY/150),transition:'opacity 0.3s'}}>
+        <Mono style={{fontSize:'0.55rem',letterSpacing:'0.15em',textTransform:'uppercase',color:'var(--muted)'}}>scroll</Mono>
+        <div style={{width:1,height:28,background:'linear-gradient(to bottom,var(--accent),transparent)',animation:'pulse 2s ease-in-out infinite'}}/>
+      </div>
+    </section>
+  );
+}
 
-        {/* ══ HERO ══════════════════════════════════════ */}
-        <section style={{...sec,paddingTop:140,minHeight:'100vh',display:'flex',flexDirection:'column',justifyContent:'center'}} id="home-hero">
-          <div style={cx}>
-            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,width:'fit-content',
-              background:'var(--accent-bg)',border:'1px solid var(--accent-b)',borderRadius:100,padding:'6px 16px'}}>
-              <div style={{width:6,height:6,borderRadius:'50%',background:'var(--accent)',animation:'blink 2s ease-in-out infinite'}}/>
-              <span style={{fontSize:'0.68rem',letterSpacing:'0.12em',textTransform:'uppercase',color:'var(--accent)'}}>available for work</span>
-            </div>
-            <h1 style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(3rem,8vw,5.5rem)',fontWeight:800,lineHeight:1.03,letterSpacing:'-0.03em',marginBottom:20}}>
-              Deepak<br/><span style={{color:'var(--accent)'}}>Mahato.</span>
-            </h1>
-            <p style={{fontSize:'0.85rem',color:'var(--muted2)',maxWidth:460,lineHeight:1.8,marginBottom:28}}>
-              Laravel backend developer — fintech platforms, REST APIs, AI integrations. Based in Mumbai.
-            </p>
-            <div style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:48}}>
-              <Btn href="mailto:deepakddm1@gmail.com" solid>📨 get in touch</Btn>
-              <Btn href="https://github.com/deecodek">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                GitHub
-              </Btn>
-              <Btn href="https://linkedin.com/in/deepak-mahato-0170a0203">LinkedIn ↗</Btn>
-            </div>
-            <Terminal/>
-          </div>
-        </section>
+// ── ABOUT ─────────────────────────────────────────────
+function About(){
+  return(
+    <section id="about" style={{padding:'120px 0'}}>
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'0 32px'}}>
+        <SectionHeader number="01" label="About" description="A brief introduction."/>
 
-        {/* ══ ABOUT ══════════════════════════════════════ */}
-        <section id="about" style={sec}>
-          <div style={cx}>
-            <SectionLabel>// about</SectionLabel>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
-              <Glass style={{padding:'34px 36px',gridColumn:'1/-1'}}>
-                <p style={{fontSize:'0.86rem',lineHeight:1.85,color:'var(--muted2)'}}>
-                  <strong style={{color:'var(--text)'}}>2+ years</strong> building production-grade backend systems in <strong style={{color:'var(--accent)'}}>Laravel / PHP</strong>.
-                  At FynTune Solutions I architect insurance platforms — real-time quotation engines, multi-insurer API integrations, event-driven workflows.
-                  Shipped everything from <strong style={{color:'var(--text)'}}>RBAC auth systems</strong> to <strong style={{color:'var(--text)'}}>GenAI-powered CRM features</strong>.
+        <div className="about-grid" style={{display:'grid',gridTemplateColumns:'1.4fr 1fr',gap:16,alignItems:'start'}}>
+          <Reveal delay={0.1}>
+            <Card gradient style={{padding:'36px 40px'}}>
+              <p style={{fontSize:'0.88rem',lineHeight:2,color:'var(--muted2)',fontWeight:300}}>
+                <strong style={{color:'var(--text)',fontWeight:500}}>2+ years</strong> building production-grade backend systems in{' '}
+                <strong style={{color:'var(--accent)',fontWeight:500}}>Laravel / PHP</strong>.
+                At FynTune Solutions I architect insurance platforms — real-time quotation engines,
+                multi-insurer API integrations, event-driven workflows.
+              </p>
+              <div style={{marginTop:20,paddingTop:20,borderTop:'1px solid var(--border)'}}>
+                <p style={{fontSize:'0.82rem',lineHeight:1.9,color:'var(--muted2)',fontWeight:300}}>
+                  Shipped everything from <strong style={{color:'var(--text)',fontWeight:500}}>RBAC auth systems</strong> to{' '}
+                  <strong style={{color:'var(--text)',fontWeight:500}}>GenAI-powered CRM features</strong>.
                   Lean toward DDD, clean architecture, and keeping systems predictably boring.
                 </p>
-              </Glass>
-              {[
-                {label:'Location',val:'Mumbai, India 🇮🇳'},
-                {label:'Experience',val:'2+ years'},
-                {label:'Primary Stack',val:'Laravel · PHP · MySQL'},
-                {label:'Contact',val:'deepakddm1@gmail.com',link:'mailto:deepakddm1@gmail.com'},
-              ].map(m=>(
-                <Glass key={m.label} style={{padding:'20px 24px'}}>
-                  <div style={{fontSize:'0.6rem',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--muted)',marginBottom:6}}>{m.label}</div>
-                  {m.link
-                    ? <a href={m.link} style={{fontSize:'0.8rem',color:'var(--accent)',textDecoration:'none'}}>{m.val}</a>
-                    : <div style={{fontSize:'0.82rem',color:'var(--text)'}}>{m.val}</div>}
-                </Glass>
-              ))}
-            </div>
-          </div>
-        </section>
+              </div>
+            </Card>
+          </Reveal>
 
-        {/* ══ SKILLS ══════════════════════════════════════ */}
-        <section id="skills" style={sec}>
-          <div style={cx}>
-            <SectionLabel>// skills</SectionLabel>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:14}}>
-              {SKILLS.map(sg=>(
-                <Glass key={sg.group} style={{padding:'24px 26px'}}>
-                  <div style={{fontSize:'0.6rem',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent2)',marginBottom:12}}>{sg.group}</div>
-                  <div style={{display:'flex',flexWrap:'wrap',gap:7}}>
-                    {sg.items.map(t=><Tag key={t}>{t}</Tag>)}
+          <div style={{display:'flex',flexDirection:'column',gap:12}}>
+            {[
+              {icon:'◎',label:'Location',val:'Mumbai, India'},
+              {icon:'◈',label:'Experience',val:'2+ years'},
+              {icon:'◇',label:'Stack',val:'Laravel · PHP · MySQL'},
+              {icon:'◆',label:'Contact',val:'deepakddm1@gmail.com',link:'mailto:deepakddm1@gmail.com'},
+            ].map((m,i)=>(
+              <Reveal key={m.label} delay={0.15+i*0.08}>
+                <Card style={{padding:'18px 22px',display:'flex',alignItems:'center',gap:14}}>
+                  <span style={{fontSize:'0.9rem',color:'var(--accent)',opacity:0.6,width:24,textAlign:'center'}}>{m.icon}</span>
+                  <div style={{flex:1}}>
+                    <Mono style={{fontSize:'0.58rem',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',display:'block',marginBottom:3}}>{m.label}</Mono>
+                    {m.link
+                      ?<a href={m.link} style={{fontSize:'0.8rem',color:'var(--accent)',fontWeight:500}} data-hover>{m.val}</a>
+                      :<span style={{fontSize:'0.82rem',color:'var(--text)',fontWeight:400}}>{m.val}</span>}
                   </div>
-                </Glass>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══ WORK ══════════════════════════════════════ */}
-        <section id="work" style={sec}>
-          <div style={cx}>
-            <SectionLabel>// work experience</SectionLabel>
-            <div style={{display:'flex',flexDirection:'column',gap:16}}>
-              {EXP.map((e,i)=>(
-                <Glass key={i} style={{padding:'30px 34px',position:'relative',overflow:'hidden'}}>
-                  <div style={{position:'absolute',left:0,top:0,bottom:0,width:2,background:'linear-gradient(to bottom, var(--accent), var(--accent2))',borderRadius:'0 2px 2px 0'}}/>
-                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:10,marginBottom:6}}>
-                    <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text)'}}>{e.role}</div>
-                    <div style={{fontSize:'0.67rem',color:'var(--muted)',background:'var(--tag-bg)',border:'1px solid var(--border)',padding:'4px 12px',borderRadius:100}}>{e.period}</div>
-                  </div>
-                  <div style={{fontSize:'0.75rem',color:'var(--accent)',marginBottom:16}}>{e.company} — {e.loc}</div>
-                  <ul style={{listStyle:'none',display:'flex',flexDirection:'column',gap:8}}>
-                    {e.bullets.map((b,j)=>(
-                      <li key={j} style={{fontSize:'0.78rem',color:'var(--muted2)',lineHeight:1.65,paddingLeft:18,position:'relative'}}>
-                        <span style={{position:'absolute',left:0,color:'var(--accent)',fontSize:'0.72rem'}}>—</span>{b}
-                      </li>
-                    ))}
-                  </ul>
-                </Glass>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══ PROJECTS ══════════════════════════════════ */}
-        <section id="projects" style={sec}>
-          <div style={cx}>
-            <SectionLabel>// projects · github</SectionLabel>
-            <Projects/>
-          </div>
-        </section>
-
-        {/* ══ EDUCATION ══════════════════════════════════ */}
-        <section id="education" style={sec}>
-          <div style={cx}>
-            <SectionLabel>// education</SectionLabel>
-            <div style={{display:'flex',flexDirection:'column',gap:12}}>
-              {[
-                {deg:'BSc Information Technology',school:'University of Mumbai',yr:'2019 — 2022'},
-                {deg:'Higher Secondary Certificate — Science',school:'Sandesh College, Mumbai',yr:'2017 — 2019'},
-              ].map(e=>(
-                <Glass key={e.deg} style={{padding:'26px 34px',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:14}}>
-                  <div>
-                    <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'0.96rem',color:'var(--text)'}}>{e.deg}</div>
-                    <div style={{fontSize:'0.77rem',color:'var(--muted2)',marginTop:4}}>{e.school}</div>
-                  </div>
-                  <div style={{fontSize:'0.67rem',color:'var(--muted)',background:'var(--tag-bg)',border:'1px solid var(--border)',padding:'4px 14px',borderRadius:100}}>{e.yr}</div>
-                </Glass>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══ FOOTER ══════════════════════════════════════ */}
-        <footer style={{borderTop:'1px solid var(--border)',padding:'32px 28px',maxWidth:880,margin:'0 auto',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:14}}>
-          <div style={{fontSize:'0.7rem',color:'var(--muted)'}}>© 2026 Deepak Mahato</div>
-          <div style={{display:'flex',gap:20}}>
-            {[['Email','mailto:deepakddm1@gmail.com'],['GitHub','https://github.com/deecodek'],['LinkedIn','https://linkedin.com/in/deepak-mahato-0170a0203']].map(([l,h])=>(
-              <a key={l} href={h} target="_blank" rel="noopener"
-                style={{fontSize:'0.7rem',color:'var(--muted)',textDecoration:'none',transition:'color 0.2s'}}
-                onMouseEnter={e=>e.target.style.color='var(--accent)'}
-                onMouseLeave={e=>e.target.style.color='var(--muted)'}
-                data-hover
-              >{l}</a>
+                </Card>
+              </Reveal>
             ))}
           </div>
-        </footer>
+        </div>
+      </div>
+    </section>
+  );
+}
 
+// ── SKILLS ────────────────────────────────────────────
+function SkillsSection(){
+  return(
+    <section id="skills" style={{padding:'120px 0'}}>
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'0 32px'}}>
+        <SectionHeader number="02" label="Skills" description="Technologies & tools I work with."/>
       </div>
 
-      <style>{`
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-        @media(max-width:600px){
-          nav>div:nth-child(2){display:none}
-        }
-      `}</style>
+      {/* Marquee */}
+      <Reveal><SkillMarquee/></Reveal>
+
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'24px 32px 0'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:14}}>
+          {SKILLS.map((sg,i)=>(
+            <Reveal key={sg.group} delay={i*0.06}>
+              <Card style={{padding:'24px 26px',height:'100%'}}>
+                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}>
+                  <div style={{width:3,height:14,borderRadius:2,background:'var(--accent)',opacity:0.5}}/>
+                  <Mono style={{fontSize:'0.6rem',letterSpacing:'0.12em',textTransform:'uppercase',color:'var(--accent)',fontWeight:500}}>{sg.group}</Mono>
+                </div>
+                <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+                  {sg.items.map(t=><Tag key={t}>{t}</Tag>)}
+                </div>
+              </Card>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── WORK ──────────────────────────────────────────────
+function Work(){
+  return(
+    <section id="work" style={{padding:'120px 0'}}>
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'0 32px'}}>
+        <SectionHeader number="03" label="Experience" description="Where I've built things."/>
+
+        <div style={{display:'flex',flexDirection:'column',gap:20}}>
+          {EXP.map((e,i)=>(
+            <Reveal key={i} delay={i*0.12}>
+              <Card gradient style={{padding:0,overflow:'hidden'}}>
+                {/* Header bar */}
+                <div style={{padding:'24px 32px 20px',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:12}}>
+                  <div>
+                    <h3 style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1.05rem',color:'var(--text)',marginBottom:4}}>{e.role}</h3>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      <span style={{fontSize:'0.78rem',color:'var(--accent)',fontWeight:500}}>{e.company}</span>
+                      <span style={{fontSize:'0.65rem',color:'var(--muted)'}}>·</span>
+                      <span style={{fontSize:'0.72rem',color:'var(--muted2)'}}>{e.loc}</span>
+                    </div>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:8}}>
+                    <Mono style={{fontSize:'0.62rem',color:'var(--muted)',padding:'4px 12px',borderRadius:100,background:'var(--tag-bg)',border:'1px solid var(--tag-border)'}}>{e.period}</Mono>
+                    <Mono style={{fontSize:'0.62rem',color:'var(--accent)',opacity:0.7}}>{e.duration}</Mono>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div style={{padding:'20px 32px 24px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                    {e.bullets.map((b,j)=>(
+                      <div key={j} style={{display:'flex',gap:12,alignItems:'flex-start'}}>
+                        <span style={{color:'var(--accent)',fontSize:'0.6rem',marginTop:6,opacity:0.5,flexShrink:0}}>▸</span>
+                        <span style={{fontSize:'0.78rem',color:'var(--muted2)',lineHeight:1.7,fontWeight:300}}>{b}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tags */}
+                  <div style={{display:'flex',flexWrap:'wrap',gap:6,marginTop:20,paddingTop:16,borderTop:'1px solid var(--border)'}}>
+                    {e.tags.map(t=><Tag key={t} accent>{t}</Tag>)}
+                  </div>
+                </div>
+              </Card>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── PROJECTS SECTION ──────────────────────────────────
+function ProjectsSection(){
+  return(
+    <section id="projects" style={{padding:'120px 0'}}>
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'0 32px'}}>
+        <SectionHeader number="04" label="Projects" description="Open source & side projects."/>
+        <Projects/>
+      </div>
+    </section>
+  );
+}
+
+// ── EDUCATION ─────────────────────────────────────────
+function Education(){
+  const data=[
+    {deg:'BSc Information Technology',school:'University of Mumbai',yr:'2019 — 2022',icon:'🎓'},
+    {deg:'HSC — Science',school:'Sandesh College, Mumbai',yr:'2017 — 2019',icon:'📚'},
+  ];
+  return(
+    <section id="education" style={{padding:'120px 0'}}>
+      <div className="section-content" style={{maxWidth:960,margin:'0 auto',padding:'0 32px'}}>
+        <SectionHeader number="05" label="Education"/>
+        <div style={{display:'flex',flexDirection:'column',gap:12}}>
+          {data.map((e,i)=>(
+            <Reveal key={e.deg} delay={i*0.1}>
+              <Card style={{padding:'24px 32px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:16}}>
+                <div style={{display:'flex',alignItems:'center',gap:16}}>
+                  <span style={{fontSize:'1.2rem',opacity:0.6}}>{e.icon}</span>
+                  <div>
+                    <h3 style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'0.92rem',color:'var(--text)',marginBottom:3}}>{e.deg}</h3>
+                    <span style={{fontSize:'0.75rem',color:'var(--muted2)',fontWeight:300}}>{e.school}</span>
+                  </div>
+                </div>
+                <Mono style={{fontSize:'0.62rem',color:'var(--muted)',padding:'4px 12px',borderRadius:100,background:'var(--tag-bg)',border:'1px solid var(--tag-border)'}}>{e.yr}</Mono>
+              </Card>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── FOOTER ────────────────────────────────────────────
+function Footer(){
+  return(
+    <Reveal>
+      <footer style={{borderTop:'1px solid var(--border)',maxWidth:960,margin:'0 auto',padding:'48px 32px'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:24,marginBottom:32}}>
+          <div>
+            <span style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'1.2rem',color:'var(--text)'}}>
+              DM<span style={{color:'var(--accent)'}}>.</span>
+            </span>
+            <p style={{fontSize:'0.75rem',color:'var(--muted)',marginTop:6,maxWidth:260,lineHeight:1.7,fontWeight:300}}>
+              Backend developer building reliable systems with Laravel, PHP, and modern tooling.
+            </p>
+          </div>
+          <div style={{display:'flex',gap:28}}>
+            {[
+              ['Email','mailto:deepakddm1@gmail.com'],
+              ['GitHub','https://github.com/deecodek'],
+              ['LinkedIn','https://linkedin.com/in/deepak-mahato-0170a0203']
+            ].map(([l,h])=>(
+              <a key={l} href={h} target="_blank" rel="noopener" data-hover
+                style={{fontSize:'0.7rem',color:'var(--muted2)',transition:'color 0.2s',fontWeight:400}}
+                onMouseEnter={e=>e.target.style.color='var(--accent)'}
+                onMouseLeave={e=>e.target.style.color='var(--muted2)'}>{l}</a>
+            ))}
+          </div>
+        </div>
+        <div style={{height:1,background:'var(--border)',marginBottom:20}}/>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}}>
+          <Mono style={{fontSize:'0.62rem',color:'var(--muted)'}}>© 2026 Deepak Mahato</Mono>
+          <Mono style={{fontSize:'0.58rem',color:'var(--muted)',opacity:0.5}}>designed & built with precision</Mono>
+        </div>
+      </footer>
+    </Reveal>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────
+function App(){
+  const[theme,setTheme]=useState('dark');
+  const[active,setActive]=useState('home');
+  const{y:scrollY,progress}=useScroll();
+  useCursor();
+
+  useEffect(()=>{document.body.setAttribute('data-theme',theme);},[theme]);
+
+  useEffect(()=>{
+    const ids=['about','skills','work','projects','education'];
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});
+    },{threshold:0.2});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+    const heroObs=new IntersectionObserver(([e])=>{if(e.isIntersecting)setActive('home');},{threshold:0.4});
+    const hero=document.getElementById('home-hero');
+    if(hero)heroObs.observe(hero);
+    return()=>{obs.disconnect();heroObs.disconnect();};
+  },[]);
+
+  return(
+    <>
+      <ScrollProgress progress={progress}/>
+      <Background scrollY={scrollY}/>
+      <Navbar theme={theme} setTheme={setTheme} active={active} scrollY={scrollY}/>
+      <SideNav active={active}/>
+
+      <div style={{position:'relative',zIndex:1}}>
+        <Hero scrollY={scrollY}/>
+
+        <Divider style={{margin:'0 auto'}}/>
+        <About/>
+
+        <Divider style={{margin:'0 auto'}}/>
+        <SkillsSection/>
+
+        <Divider style={{margin:'0 auto'}}/>
+        <Work/>
+
+        <Divider style={{margin:'0 auto'}}/>
+        <ProjectsSection/>
+
+        <Divider style={{margin:'0 auto'}}/>
+        <Education/>
+
+        <Footer/>
+      </div>
     </>
   );
 }
