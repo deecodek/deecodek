@@ -1,164 +1,202 @@
-# Hi 👋 I'm Deepak Mahato
+<div align="center">
 
-## Senior Backend Software Engineer | Laravel Architect | AI Engineer | Open Source Builder
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=220&section=header&text=Deepak%20Mahato&fontSize=58&fontColor=fff&animation=fadeIn&fontAlignY=35&desc=Backend%20Engineer%20%7C%20Laravel%20Architect%20%7C%20AI%20Builder&descAlignY=55&descSize=18" width="100%"/>
 
-Backend Software Engineer with 2.8+ years of experience building scalable Insurance, CRM, FinTech, and Enterprise platforms. Specialized in Laravel, PHP, PostgreSQL, MySQL, Redis, API Architecture, System Design, AI Agents, and Developer Tooling.
+<a href="https://github.com/deecodek">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&pause=1000&color=A9FEF7&center=true&vCenter=true&width=700&lines=Backend+Engineer+%7C+Laravel+%26+PHP+Specialist;Building+AI+Coding+Agents+%26+Dev+Tools;Insurance+%2B+FinTech+Platform+Architect;Open+Source+Builder+%40+DeeCodeK+Labs" alt="Typing SVG" />
+</a>
 
-### 🚀 Professional Highlights
+<br/>
 
-- Built and maintained 10+ production-grade APIs
-- Integrated 10+ insurer, payment gateway, cloud, and enterprise systems
-- Led backend revamp of insurance platforms
-- Designed scalable RBAC and authorization systems
-- Built AI-powered coding agents and developer tools
-- Developed 8+ open-source products and packages
-- Experienced in high-volume transactional systems
-- Strong focus on clean architecture and maintainable code
+<img src="https://komarev.com/ghpvc/?username=deecodek&color=A9FEF7&style=for-the-badge&label=PROFILE+VIEWS" />
+<img src="https://img.shields.io/github/followers/deecodek?label=FOLLOWERS&style=for-the-badge&color=blueviolet" />
+<img src="https://img.shields.io/badge/EXPERIENCE-2.8%2B%20YEARS-orange?style=for-the-badge" />
+<img src="https://img.shields.io/badge/LOCATION-MUMBAI%2C%20INDIA-success?style=for-the-badge" />
 
----
+</div>
 
-## 🏢 Domain Expertise
+<br/>
 
-- Insurance / InsurTech
-- CRM Platforms
-- Enterprise Applications
-- Agent Onboarding Systems
-- Policy Lifecycle Management
-- Claims Management
-- Quotation Engines
-- Certificate Generation
-- Payment Integrations
-- Multi-Tenant SaaS
-- AI Developer Tools
+## 🧑‍💻 About Me
 
----
+Backend Software Engineer with 2.8+ years of experience building scalable Insurance, CRM, FinTech, and Enterprise platforms under the brand **DeeCodeK Labs**. I specialize in Laravel architecture, API design, and AI-integrated systems — and I spend most of my free time building AI coding agents and developer tooling.
 
-## ⚙️ Backend Stack
+- 🏢 Building **HelixCode V2** — a TypeScript AI coding-agent platform with a unified backend for CLI + Web
+- 🛠️ Shipped 10+ production APIs across insurance, fintech, and enterprise domains
+- 🤖 Deep into multi-agent systems, RAG, and LLM-to-LLM protocols
+- 📦 Maintainer of 8+ open-source Laravel & AI packages
+- 📫 Always building something — DM me if you want to collaborate
 
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php)
-![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js)
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript)
+<br/>
 
----
+## ⚙️ Tech Stack
 
-## 🗄️ Databases
+<div align="center">
 
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis)
+<img src="https://skillicons.dev/icons?i=php,laravel,nodejs,express,ts,js,react,nextjs,flutter,dart" />
+<br/><br/>
+<img src="https://skillicons.dev/icons?i=mysql,postgres,mongodb,redis,docker,git,github,gcp,figma,vscode" />
 
----
+</div>
 
-## ☁️ DevOps & Cloud
+<br/>
 
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions)
-![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins)
-![GCP](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud)
+<table align="center">
+<tr>
+<td valign="top" width="33%">
 
----
+### 🔧 Backend
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 
-## 🤖 AI & LLM
+</td>
+<td valign="top" width="33%">
 
-![Gemini](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge)
-![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai)
-![Anthropic](https://img.shields.io/badge/Anthropic-000000?style=for-the-badge)
-![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge)
+### 🗄️ Data & Cache
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
 
-### AI Expertise
+</td>
+<td valign="top" width="33%">
 
-- AI Agents
-- Agent Orchestration
-- Coding Agents
-- Prompt Engineering
-- RAG
-- LLM Integrations
-- Context Compression
-- Multi-Provider Routing
-- Tool Calling
-- AI Workflows
+### 🤖 AI / LLM
+![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=flat-square&logo=googlegemini&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=openai&logoColor=white)
+![Anthropic](https://img.shields.io/badge/Anthropic-191919?style=flat-square&logo=anthropic&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
 
----
+</td>
+</tr>
+</table>
 
-## 🏗️ Architecture & Engineering
+<br/>
 
-- System Design
-- Clean Architecture
-- Domain Driven Design
-- Service Layer Architecture
-- Event Driven Architecture
-- Queue Processing
-- CQRS Concepts
-- Repository Pattern
-- Microservices
-- API First Design
-- Multi-Tenant Architecture
-- Scalable Backend Systems
+## 🏗️ Architecture & Domains
 
----
+<img src="https://img.shields.io/badge/InsurTech-FF6B6B?style=for-the-badge" />
+<img src="https://img.shields.io/badge/FinTech-4ECDC4?style=for-the-badge" />
+<img src="https://img.shields.io/badge/Multi--Tenant%20SaaS-FFD93D?style=for-the-badge&logoColor=black" />
+<img src="https://img.shields.io/badge/AI%20Agents-9D4EDD?style=for-the-badge" />
+<img src="https://img.shields.io/badge/RBAC%20%26%20Security-2EC4B6?style=for-the-badge" />
+<img src="https://img.shields.io/badge/Microservices-FF9F1C?style=for-the-badge" />
 
-## 🔐 Security
+<br/><br/>
 
-- JWT
-- OAuth2
-- RBAC
-- Rate Limiting
-- Encryption
-- Secure File Handling
-- Audit Logging
-- Access Control
+## 📦 Featured Open Source Projects
 
----
+<table>
+<tr>
+<td width="50%">
 
-## 📦 Open Source Projects
+**🤖 [HelixCode V2](https://github.com/deecodek/helixcode)**
+AI coding-agent platform with a centralized backend serving CLI and Web
+`TypeScript` `Node.js` `Multi-Agent`
 
-### 🤖 HelixCode V2
-AI Coding Agent Platform
+</td>
+<td width="50%">
 
-### 🏢 PolicySphere
-Insurance Distribution Platform
+**🏢 [PolicySphere](https://github.com/deecodek/policysphere)**
+Insurance distribution platform with configurable provider drivers
+`Laravel` `MySQL` `Redis`
 
-### 🌉 AI Bridge
-Cross-AI Conversation Transfer Extension
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-### 🧪 Laravel Raid
-Zero Dependency PHP Testing Framework
+**🌉 [AI Bridge](https://github.com/deecodek/ai-bridge)**
+Cross-AI conversation transfer browser extension
+`JavaScript` `Browser Extension`
 
-### 📄 LaraPDFX
-Enterprise PDF Generation Package
+</td>
+<td width="50%">
 
-### 🚦 Laravel Rate Limiter
-Enterprise API Protection Framework
+**🧪 [Laravel Raid](https://github.com/deecodek/laravel-raid)**
+Zero-dependency PHP testing framework
+`PHP` `Testing`
 
-### 🧠 FlowCode
-AI Software Planning Assistant
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-### 🐍 Python Code Writer
-AI Project Generation Platform
+**📄 [LaraPDFX](https://github.com/deecodek/larapdfx)**
+Enterprise-grade multi-format PDF generation package
+`Laravel` `PDF`
 
----
+</td>
+<td width="50%">
 
-## 📊 GitHub Stats
+**🚦 [Laravel Rate Limiter](https://github.com/deecodek/laravel-rate-limiter)**
+Enterprise API protection & throttling framework
+`Laravel` `Security`
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=deecodek&show_icons=true&theme=tokyonight)
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=deecodek&layout=compact&theme=tokyonight)
+**🧠 [FlowCode](https://github.com/deecodek/flowcode)**
+AI-powered software planning assistant
+`AI` `Planning`
 
-![Streak Stats](https://github-readme-streak-stats.herokuapp.com/?user=deecodek&theme=tokyonight)
+</td>
+<td width="50%">
 
----
+**🐍 [Python Code Writer](https://github.com/deecodek/python-code-writer)**
+AI-driven project generation platform
+`Python` `AI`
 
-## 🎯 Current Focus
+</td>
+</tr>
+</table>
 
-- Agentic AI Systems
-- AI Coding Platforms
-- Laravel Ecosystem
-- Enterprise Architecture
-- Developer Tooling
-- Open Source Development
-- High Performance APIs
-- System Design
+<br/>
+
+## 📊 GitHub Analytics
+
+<div align="center">
+
+<img src="https://github-readme-stats.vercel.app/api?username=deecodek&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true" width="49%" />
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=deecodek&theme=tokyonight&hide_border=true" width="49%" />
+
+<br/>
+
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=deecodek&layout=compact&theme=tokyonight&hide_border=true" width="40%" />
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=deecodek&theme=tokyo-night&hide_border=true" width="58%" />
+
+<br/><br/>
+
+<img src="https://github-profile-trophy.vercel.app/?username=deecodek&theme=tokyonight&no-frame=true&row=1&column=7&margin-w=8" />
+
+</div>
+
+<br/>
+
+## 🐍 Contribution Snake
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/deecodek/deecodek/output/github-contribution-grid-snake.svg" width="100%" />
+</div>
+
+<br/>
+
+## 🤝 Connect With Me
+
+<div align="center">
+
+<a href="https://github.com/deecodek"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
+<a href="https://linkedin.com/in/your-linkedin-handle"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+<a href="https://twitter.com/your-twitter-handle"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" /></a>
+<a href="mailto:your-email@example.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
+
+</div>
+
+<br/>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=footer" width="100%"/>
