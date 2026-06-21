@@ -17,7 +17,7 @@
 
 ## 🧑‍💻 About Me
 
-Backend Software Engineer with 2.8+ years of experience building scalable Insurance, CRM, FinTech, and Enterprise platforms under the brand **DeeCodeK Labs**. I specialize in Laravel architecture, API design, and AI-integrated systems, and I spend most of my free time building AI coding agents and developer tooling.
+Backend Software Engineer with 2.11+ years of experience building scalable Insurance, CRM, FinTech, and Enterprise platforms under the brand **DeeCodeK Labs**. I specialize in Laravel architecture, API design, and AI-integrated systems, and I spend most of my free time building AI coding agents and developer tooling.
 
 Currently building **HelixCode V2**, a TypeScript AI coding-agent platform with a unified backend serving both CLI and Web. Shipped 10+ production APIs across insurance, fintech, and enterprise domains, and maintain 8+ open-source Laravel and AI packages. Always building something — feel free to reach out if you want to collaborate.
 
